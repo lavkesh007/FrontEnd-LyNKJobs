@@ -1,0 +1,141 @@
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import LoppyLogo from '../../../assets/3.png'
+
+
+const Navbar = () => {
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    fetch("https://lynkjobs-1.onrender.com/user/me", {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token")
+      }
+    })
+      .then(res => {
+        console.log("STATUS:", res.status);
+        if (!res.ok) throw new Error();
+        return res.json();
+      })
+      .then(data => setUser(data))
+      .catch(() => setUser(null));
+  }, []);
+
+  const scrollToAbout = ()=>{
+    const section = document.getElementById("about");
+    navigate("/?scroll=about");
+    section.scrollIntoView({behavior : "smooth"})
+    
+  }
+  
+
+  return (
+    <div id='home' className="w-full">
+      <div className="flex justify-between items-center px-10 py-4 bg-white shadow">
+
+        {/* 🔥 Logo */}
+        <div className="flex items-center bg-black/10 rounded-2xl p-2 w-56 text-center flex-col">
+          {/* <img className="w-40 h-10 object-contain" src={LoppyLogo} alt="logo" /> */}
+          <h1 className='text-slate-800 text-3xl font-serif font-bold'>LyNK <span className='text-3xl text-orange-600'>Job's</span></h1>
+        </div>
+
+        {/* 🔥 Menu */}
+        <div className="flex gap-6 items-center">
+
+          <p className="cursor-pointer text-gray-600 text-lg hover:text-orange-500"
+            onClick={() => {
+                navigate("/");
+                setTimeout(() => {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }, 100);
+              }}>
+            Home
+          </p>
+
+          <p className={`cursor-pointer text-gray-600 text-lg hover:text-orange-500 `} onClick={scrollToAbout}>
+            About
+          </p>
+
+          <p className="cursor-pointer text-gray-600 text-lg hover:text-orange-500" onClick={()=>{
+            navigate('/user/contact');
+            setTimeout(() => {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }, 1);
+          }}>
+            Contact
+          </p>
+
+          {/* 🔥 User Section */}
+          {user ? (
+            <div
+              className="relative"
+              onMouseEnter={() => setOpen(true)}
+              onMouseLeave={() => setOpen(false)}
+            >
+
+              {/* ✅ FIXED (div instead of p) */}
+              <div className="cursor-pointer font-semibold text-orange-600 flex items-center gap-2">
+                <span className="text-lg">{user.userName}</span>
+
+                <img
+                  className="w-8 h-8 rounded-full border"
+                  src={
+                    user?.image
+                      ? user.image
+                      : "https://img.freepik.com/premium-vector/vector-flat-illustration-grayscale-avatar-user-profile-person-icon-gender-neutral-silhouette-profile-picture-suitable-social-media-profiles-icons-screensavers-as-templatex9xa_719432-2191.jpg"
+                  }
+                  alt=""
+                />
+              </div>
+
+              {/* 🔥 Dropdown */}
+              {open && (
+                <div className="absolute right-0  w-44 bg-white border rounded-lg shadow-lg overflow-hidden">
+
+                  <p
+                    className="p-2 hover:bg-orange-100 cursor-pointer"
+                    onClick={() => navigate("/user/profile")}
+                  >
+                    View Profile
+                  </p>
+
+                  <p
+                    className="p-2 hover:bg-orange-100 cursor-pointer"
+                    onClick={() => navigate("/user/alljobs")}
+                  >
+                    Jobs
+                  </p>
+
+                  <p
+                    className="p-2 hover:bg-red-100 text-red-500 cursor-pointer"
+                    onClick={() => {
+                      localStorage.removeItem("token");
+                      setUser(null);
+                      navigate("/");
+                    }}
+                  >
+                    Logout
+                  </p>
+
+                </div>
+              )}
+            </div>
+          ) : (
+            <button
+              className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg"
+              onClick={() => navigate("/user/login")}
+            >
+              Login
+            </button>
+          )}
+
+        </div>
+      </div>
+
+    </div>
+  );
+};
+
+export default Navbar;
