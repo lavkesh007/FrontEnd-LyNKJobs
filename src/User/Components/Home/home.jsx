@@ -4,7 +4,7 @@ import JobsCard from "../Jobs/JobsCard";
 import Navbar from "./Navbar";
 import Intro from "./intro";
 import Main from "../Aboutus/Main";
-import Searchbar from "./Searchbar";
+import Searchbar from "./SearchBar";
 import FooterMain from "../Footer/FooterMain";
 import ContactMain from "../Contact/ContactMain"
 const Home = () => {   // ✅ Capitalized

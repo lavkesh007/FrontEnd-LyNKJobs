@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import Navbar from "../Home/Navbar";
 import { useLocation, useNavigate } from 'react-router-dom';
-import Searchbar from '../Home/Searchbar';
+import Searchbar from '../Home/SearchBar';
 import FooterMain from '../Footer/FooterMain';
 
 const AllJobs = () => {
