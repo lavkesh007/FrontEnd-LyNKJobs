@@ -38,7 +38,6 @@ const DeleteUser = () => {
           });
 
           localStorage.removeItem("token");
-
           navigate("/");
 
         } else {
@@ -61,9 +60,9 @@ const DeleteUser = () => {
 
   return (
 
-    <div className="flex flex-col items-center justify-center gap-4 h-full bg-white/60">
+    <div className="flex flex-col items-center justify-center gap-4 min-h-screen bg-white/60 px-4">
 
-      <h1 className="text-xl font-semibold text-red-500">
+      <h1 className="text-lg md:text-xl font-semibold text-red-500 text-center">
         Delete Account
       </h1>
 
@@ -73,7 +72,7 @@ const DeleteUser = () => {
 
       <button 
         onClick={handleDelete}
-        className="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg"
+        className="w-full max-w-xs bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg"
       >
         Delete My Account
       </button>

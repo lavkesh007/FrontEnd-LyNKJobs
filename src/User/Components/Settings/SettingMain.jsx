@@ -1,17 +1,18 @@
 import React from 'react'
-import SettingMenu from './SettingMenu'
-import ChangePassword from './ProfileChangePassword'
-import CheckPassword from './CheckPassword'
-import Index from './index'
 import { Outlet } from 'react-router-dom'
+import SettingMenu from './SettingMenu'
 
 const SettingMain = () => {
   return (
-    <div className='w-full h-full p-10 flex'>
-        <div className='w-1/4'>
+    <div className='w-full min-h-screen p-4 md:p-10 flex flex-col md:flex-row gap-4'>
+
+        {/* 🔥 Menu */}
+        <div className='w-full md:w-1/4'>
             <SettingMenu/>
         </div>
-        <div className='w-3/4'> 
+
+        {/* 🔥 Content */}
+        <div className='w-full md:w-3/4'>
             <Outlet/>
         </div>
         
