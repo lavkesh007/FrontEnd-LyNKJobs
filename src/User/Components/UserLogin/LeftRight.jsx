@@ -1,19 +1,21 @@
 import React from 'react'
 import LeftSide from './leftSide'
-import RightSide from './rightSide'
-import { BrowserRouter ,Routes,Route, Outlet} from 'react-router-dom'
-import Forgot from '../UserForgotPassword/forgot'
+import { Outlet } from 'react-router-dom'
+
 const LeftRight = () => {
   return (
-    <div className='flex gap-0'>
-      <div className='w-1/2 h-full'>
+    <div className='flex flex-col md:flex-row w-full h-full'>
+      
+      {/* LEFT SIDE */}
+      <div className='w-full md:w-1/2 h-64 md:h-full'>
         <LeftSide/>
       </div>
-      <div className='w-1/2 h-full'>
+
+      {/* RIGHT SIDE */}
+      <div className='w-full md:w-1/2 h-full'>
         <Outlet/>
       </div>
-      
-      
+
     </div>
   )
 }

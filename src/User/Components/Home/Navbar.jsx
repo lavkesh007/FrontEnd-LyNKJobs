@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import LoppyLogo from '../../../assets/3.png'
-
 
 const Navbar = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [mobileMenu, setMobileMenu] = useState(false);
 
   useEffect(() => {
     fetch("https://lynkjobs-1.onrender.com/user/me", {
@@ -26,43 +25,44 @@ const Navbar = () => {
   const scrollToAbout = ()=>{
     const section = document.getElementById("about");
     navigate("/?scroll=about");
-    section.scrollIntoView({behavior : "smooth"})
-    
+    if(section){
+      section.scrollIntoView({behavior : "smooth"})
+    }
   }
-  
 
   return (
     <div id='home' className="w-full">
-      <div className="flex justify-between items-center px-10 py-4 bg-white shadow">
+      <div className="flex justify-between items-center px-4 md:px-10 py-4 bg-white shadow">
 
         {/* 🔥 Logo */}
-        <div className="flex items-center bg-black/10 rounded-2xl p-2 w-56 text-center flex-col">
-          {/* <img className="w-40 h-10 object-contain" src={LoppyLogo} alt="logo" /> */}
-          <h1 className='text-slate-800 text-3xl font-serif font-bold'>LyNK <span className='text-3xl text-orange-600'>Job's</span></h1>
+        <div className="flex items-center bg-black/10 rounded-2xl p-2 w-auto md:w-56 text-center flex-col">
+          <h1 className='text-xl md:text-3xl text-slate-800 font-serif font-bold'>
+            LyNK <span className='text-orange-600'>Job's</span>
+          </h1>
         </div>
 
-        {/* 🔥 Menu */}
-        <div className="flex gap-6 items-center">
+        {/* 🔥 Desktop Menu */}
+        <div className="hidden md:flex gap-6 items-center">
 
           <p className="cursor-pointer text-gray-600 text-lg hover:text-orange-500"
             onClick={() => {
-                navigate("/");
-                setTimeout(() => {
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                }, 100);
-              }}>
+              navigate("/");
+              setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }, 100);
+            }}>
             Home
           </p>
 
-          <p className={`cursor-pointer text-gray-600 text-lg hover:text-orange-500 `} onClick={scrollToAbout}>
+          <p className="cursor-pointer text-gray-600 text-lg hover:text-orange-500" onClick={scrollToAbout}>
             About
           </p>
 
           <p className="cursor-pointer text-gray-600 text-lg hover:text-orange-500" onClick={()=>{
             navigate('/user/contact');
             setTimeout(() => {
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                }, 1);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }, 1);
           }}>
             Contact
           </p>
@@ -75,7 +75,6 @@ const Navbar = () => {
               onMouseLeave={() => setOpen(false)}
             >
 
-              {/* ✅ FIXED (div instead of p) */}
               <div className="cursor-pointer font-semibold text-orange-600 flex items-center gap-2">
                 <span className="text-lg">{user.userName}</span>
 
@@ -90,9 +89,8 @@ const Navbar = () => {
                 />
               </div>
 
-              {/* 🔥 Dropdown */}
               {open && (
-                <div className="absolute right-0  w-44 bg-white border rounded-lg shadow-lg overflow-hidden">
+                <div className="absolute right-0 w-44 bg-white border rounded-lg shadow-lg overflow-hidden">
 
                   <p
                     className="p-2 hover:bg-orange-100 cursor-pointer"
@@ -132,7 +130,73 @@ const Navbar = () => {
           )}
 
         </div>
+
+        {/* 🔥 Mobile Button */}
+        <div className="md:hidden">
+          <button onClick={() => setMobileMenu(!mobileMenu)} className="text-2xl">
+            ☰
+          </button>
+        </div>
       </div>
+
+      {/* 🔥 Mobile Menu */}
+      {mobileMenu && (
+        <div className="md:hidden bg-white shadow px-4 py-3 flex flex-col gap-3">
+
+          <p className="cursor-pointer text-gray-600"
+            onClick={() => {
+              navigate("/");
+              setMobileMenu(false);
+              setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }, 100);
+            }}>
+            Home
+          </p>
+
+          <p className="cursor-pointer text-gray-600"
+            onClick={() => {
+              scrollToAbout();
+              setMobileMenu(false);
+            }}>
+            About
+          </p>
+
+          <p className="cursor-pointer text-gray-600"
+            onClick={()=>{
+              navigate('/user/contact');
+              setMobileMenu(false);
+              setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }, 1);
+            }}>
+            Contact
+          </p>
+
+          {user ? (
+            <>
+              <p onClick={()=>navigate("/user/profile")} className="cursor-pointer">Profile</p>
+              <p onClick={()=>navigate("/user/alljobs")} className="cursor-pointer">Jobs</p>
+              <p className="text-red-500 cursor-pointer"
+                onClick={()=>{
+                  localStorage.removeItem("token");
+                  setUser(null);
+                  navigate("/");
+                }}>
+                Logout
+              </p>
+            </>
+          ) : (
+            <button
+              className="bg-orange-500 text-white py-2 rounded"
+              onClick={() => navigate("/user/login")}
+            >
+              Login
+            </button>
+          )}
+
+        </div>
+      )}
 
     </div>
   );

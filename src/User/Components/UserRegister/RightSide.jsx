@@ -1,8 +1,8 @@
 import React from 'react'
 import{useNavigate} from "react-router-dom";
 import { useState } from 'react';
-import LoppyLogo from '../../../assets/3.png'
 import Swal from 'sweetalert2';
+
 const RegisterMiddleContent = () => {
     const navigate = useNavigate();
 
@@ -12,8 +12,6 @@ const RegisterMiddleContent = () => {
     const [DoB,setDob] = useState("");
     const [Password,setPassword] = useState("");
     const [RePassword,setRePassword] = useState("");
-
-    
 
     const handleRegister = async(e) =>{
         e.preventDefault();
@@ -40,21 +38,18 @@ const RegisterMiddleContent = () => {
                         password : Password
                     })
                 });
+
                 const data = await response.json();
+
                 if(response.ok){
                     Swal.fire({
                         text:'OTP Send on your Email!!!',
                     })
+
                     navigate("/user/register/otp",{
-                        state:{
-                            name,
-                            email,
-                            phone,
-                            DoB,
-                            Password
-                        }
+                        state:{ name, email, phone, DoB, Password }
                     });
-                    console.log(data);
+
                 }else{
                     Swal.fire({
                         text: data.message,
@@ -63,105 +58,109 @@ const RegisterMiddleContent = () => {
                     navigate("/user/login")
                 }
             }
-            
         }catch(error){
             alert(error)
             console.error(error);
         }
     }
 
-
-    
   return (
-    <div className='w-2/5 bg-white h-screen p-2  flex flex-col content-center items-center mt-12'>
-        <div>
-            {/* <img className='w-48 h-20' src={LoppyLogo} alt="" /> */}
-        </div>
-        <div>
-            <h1 className='text-2xl text-slate-500'>Welcome to <span className='text-3xl text-gray-600 font-serif'>Lynk</span><span className='text-3xl text-red-400 font-serif'>Job's</span></h1>
-        </div>
-        <form onSubmit={handleRegister}>
-            <div className='flex flex-col items-center bg-black/10  w-fit p-7 rounded-lg mt-4'>
-                <div>
-                <h1>Name: </h1>
-                <input
-                type="username"
-                placeholder="Enter Your Full Name"
-                className="w-72 p-2 mb-4 border rounded-full text-center"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                />
+    <div className='w-full h-full p-4 flex flex-col items-center justify-center'>
+
+        <h1 className='text-xl md:text-2xl text-slate-500 text-center'>
+          Welcome to 
+          <span className='text-2xl md:text-3xl text-gray-600 font-serif'> Lynk</span>
+          <span className='text-2xl md:text-3xl text-red-400 font-serif'> Job's</span>
+        </h1>
+
+        <form onSubmit={handleRegister} className='w-full flex justify-center'>
+            <div className='flex flex-col items-center bg-black/10 w-full max-w-sm p-5 rounded-lg mt-4'>
+
+                <div className='w-full'>
+                    <h1>Name: </h1>
+                    <input
+                    type="username"
+                    placeholder="Enter Your Full Name"
+                    className="w-full p-2 mb-4 border rounded-full text-center"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    />
                 </div>
-                <div>
+
+                <div className='w-full'>
                     <h1>Email: </h1>
                     <input
                         type="email"
                         placeholder="Enter Email ID"
-                        className="w-72 p-2 mb-4 border rounded-full text-center"
+                        className="w-full p-2 mb-4 border rounded-full text-center"
                         required
                         value={email}
-                        
                         onChange={(e) => setEmail(e.target.value)}
                     />
                 </div>
-                <div>
+
+                <div className='w-full'>
                     <h1>Phone Number: </h1>
                     <input
                         type="number"
                         placeholder="Enter Phone Number"
-                        className="w-72 p-2 mb-4 border rounded-full text-center"
+                        className="w-full p-2 mb-4 border rounded-full text-center"
                         required
-
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                     />
                 </div>
-                <div>
+
+                <div className='w-full'>
                     <h1>DoB: </h1>
                     <input
                         type="Date"
-                        placeholder="Enter Age"
-                        className="w-72 p-2 mb-4 border rounded-full text-center text-slate-400"
+                        className="w-full p-2 mb-4 border rounded-full text-center text-slate-400"
                         required
                         value={DoB}
                         onChange={(e) => setDob(e.target.value)}
                     />
                 </div>
-                <div>
+
+                <div className='w-full'>
                     <h1>Password: </h1>
                     <input
                         type="password"
                         placeholder="Enter password"
-                        className="w-72 p-2 mb-4 border rounded-full text-center"
+                        className="w-full p-2 mb-4 border rounded-full text-center"
                         required
                         value={Password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
-                <div>
+
+                <div className='w-full'>
                     <h1>Re-Enter Password: </h1>
                     <input
                         type="password"
                         placeholder="Enter Re-Enter password"
-                        className="w-72 p-2 mb-4 border rounded-full text-center"
+                        className="w-full p-2 mb-4 border rounded-full text-center"
                         required
                         value={RePassword}
                         onChange={(e) => setRePassword(e.target.value)}
                     />
                 </div>
-                <div>
-                    <button className="w-36 bg-slate-500 text-white p-2 rounded hover:bg-slate-800" type='Submit'>
-                        Register
-                    </button>
+
+                <button className="w-full bg-slate-500 text-white p-2 rounded hover:bg-slate-800">
+                    Register
+                </button>
+
+                <div className='flex flex-col md:flex-row mt-2 text-center'>
+                    Already have account? 
+                    <p className='text-red-500 cursor-pointer px-2' onClick={()=> navigate('/user/login')}>
+                        login
+                    </p>
                 </div>
-                <div className='flex '>
-                    Already have account? <p className='text-red-500 cursor-pointer px-2' onClick={()=> navigate('/user/login')}>login</p>
-                </div>
+
             </div>
         </form>
-        
-        
+
     </div>
   )
 }

@@ -24,7 +24,6 @@ import AdminDetails from './Admin/Components/AdminProfile/AdminDetails';
 import DeleteJob from './Admin/Components/AdminJobs/DeleteJob';
 import AdminUserRequest from './Admin/Components/AdminResponse/AdminUserRequest';
 import EditProfile from './User/Components/UserProfile/EditProfile';
-import SettingMenu from './User/Components/Settings/SettingMenu';
 import SettingMain from './User/Components/Settings/SettingMain';
 import CheckPassword from './User/Components/Settings/CheckPassword';
 import ChangeProfilePassword from './User/Components/Settings/ProfileChangePassword';
