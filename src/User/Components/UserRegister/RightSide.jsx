@@ -98,23 +98,32 @@ const RegisterMiddleContent = () => {
                     <h1>Email: </h1>
                     <input
                         type="email"
-                        placeholder="Enter Email ID"
+                        placeholder="Enter Gmail ID"
                         className="w-full p-2 mb-4 border rounded-full text-center"
                         required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        
+                        // ✅ Only allow Gmail
+                        pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$"
+                        title="Please enter a valid Gmail address (example@gmail.com)"
                     />
                 </div>
 
                 <div className='w-full'>
                     <h1>Phone Number: </h1>
                     <input
-                        type="number"
+                        type="tel"
                         placeholder="Enter Phone Number"
                         className="w-full p-2 mb-4 border rounded-full text-center"
                         required
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
+
+                        // ✅ Only 10 digit Indian number
+                        pattern="[6-9]{1}[0-9]{9}"
+                        maxLength="10"
+                        title="Enter valid 10-digit phone number starting with 6-9"
                     />
                 </div>
 
