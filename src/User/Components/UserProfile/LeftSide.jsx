@@ -65,21 +65,21 @@ const LeftSide = () => {
                 </div>
 
                 <div 
-                  className={`p-3 rounded-lg cursor-pointer ${location.pathname==="/user/profile" ? "bg-white/20" : ""}`}
+                  className={`p-3 rounded-lg cursor-pointer hover:bg-white/20 ${location.pathname==="/user/profile" ? "bg-white/20" : ""}`}
                   onClick={()=>navigate("/user/profile")}
                 >
                   Profile
                 </div>
 
                 <div 
-                  className={`p-3 rounded-lg cursor-pointer ${location.pathname==="/user/profile/applied" ? "bg-white/20" : ""}`}
+                  className={`p-3 rounded-lg cursor-pointer hover:bg-white/20 ${location.pathname==="/user/profile/applied" ? "bg-white/20" : ""}`}
                   onClick={()=>navigate('/user/profile/applied')}
                 >
                   Applied Jobs
                 </div>
 
                 <div 
-                  className={`p-3 rounded-lg cursor-pointer ${location.pathname==="/user/profile/setting" ? "bg-white/20" : ""}`}
+                  className={`p-3 rounded-lg cursor-pointer hover:bg-white/20 ${location.pathname==="/user/profile/setting" ? "bg-white/20" : ""}`}
                   onClick={()=>navigate('/user/profile/setting')}
                 >
                   Settings
