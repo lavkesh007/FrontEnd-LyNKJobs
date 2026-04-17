@@ -23,7 +23,7 @@ const Forgototp = () => {
         }
         setLoading(true);
         try{
-            const response = await fetch("https://lynkjobs-1.onrender.com/user/forgotPasswordverifyOTP",{
+            const response = await fetch("https://api.jobslynk.in/user/forgotPasswordverifyOTP",{
                 method : "POST",
                 headers : {
                     "Content-Type" : "application/json"

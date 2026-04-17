@@ -7,11 +7,7 @@ const AllJobsCard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://lynkjobs-1.onrender.com/jobs")
-    // https://herolike-linearly-malika.ngrok-free.dev
-    // https://herolike-linearly-malika.ngrok-free.dev/
-    // https://herolike-linearly-malika.ngrok-free.dev
-    // https://herolike-linearly-malika.ngrok-free.dev/
+    fetch("https://api.jobslynk.in/jobs")
       .then((res) => res.json())
       .then((data) => setJob(data))
       .catch((err) => console.error(err));

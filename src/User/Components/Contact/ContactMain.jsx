@@ -21,7 +21,7 @@ const ContactMain = () => {
     e.preventDefault();
     try{
       console.log(msg.userMessage);
-      const response = await fetch("https://lynkjobs-1.onrender.com/user/sendMessage",{
+      const response = await fetch("https://api.jobslynk.in/user/sendMessage",{
         method : "POST",
         headers: {
           "Content-Type": "application/json"

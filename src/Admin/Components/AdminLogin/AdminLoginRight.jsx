@@ -12,7 +12,7 @@ const AdminLoginRight = () => {
   const handleAdminLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("https://lynkjobs-1.onrender.com/admin/login", {
+      const response = await fetch("https://api.jobslynk.in/admin/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

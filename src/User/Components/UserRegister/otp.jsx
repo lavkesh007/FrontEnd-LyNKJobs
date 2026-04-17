@@ -17,7 +17,7 @@ const Otp = () => {
             return;
           }
           setLoading(true);
-            const response = await fetch("https://lynkjobs-1.onrender.com/user/register" , {
+            const response = await fetch("https://api.jobslynk.in/user/register" , {
                 method : "POST",
                 headers : {
                     "Content-Type" : "application/json"

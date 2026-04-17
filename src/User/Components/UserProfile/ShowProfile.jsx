@@ -6,7 +6,7 @@ const ShowProfile = () => {
     const navigate = useNavigate();
 
     useEffect(()=>{
-        fetch("https://lynkjobs-1.onrender.com/user/userDetails",{
+        fetch("https://api.jobslynk.in/user/userDetails",{
             headers : {
                 Authorization: "Bearer " + localStorage.getItem("token")
             }

@@ -15,10 +15,10 @@ const AllJobs = () => {
     const delay = setTimeout(() => {
       
     
-    let url = "https://lynkjobs-1.onrender.com/jobs/allJobs";
+    let url = "https://api.jobslynk.in/jobs/allJobs";
 
     if (role || location) {
-      url = `https://lynkjobs-1.onrender.com/jobs/search?role=${encodeURIComponent(role)}&location=${encodeURIComponent(location)}`;
+      url = `https://api.jobslynk.in/jobs/search?role=${encodeURIComponent(role)}&location=${encodeURIComponent(location)}`;
      
     }
     fetch(url)

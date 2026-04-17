@@ -10,7 +10,7 @@ const DeleteJob = () => {
       return;
     }
     
-    fetch(`https://lynkjobs-1.onrender.com/admin/deleteJob/${jobId}`, {
+    fetch(`https://api.jobslynk.in/admin/deleteJob/${jobId}`, {
       
       method: "DELETE",
       headers: {

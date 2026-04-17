@@ -4,7 +4,7 @@ const AppliedJobs = () => {
   const [job, setJob] = useState([]);
 
   useEffect(() => {
-    fetch("https://lynkjobs-1.onrender.com/user/allAppliedJobs", {
+    fetch("https://api.jobslynk.in/user/allAppliedJobs", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token")
       }

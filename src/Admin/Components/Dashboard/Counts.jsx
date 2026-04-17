@@ -12,7 +12,7 @@ const Counts = () => {
   });
     useEffect(() => {
   const fetchStats = () => {
-    fetch("https://lynkjobs-1.onrender.com/admin/stats",{
+    fetch("https://api.jobslynk.in/admin/stats",{
         headers : {
             Authorization : "Bearer " + localStorage.getItem("adminToken")
         }

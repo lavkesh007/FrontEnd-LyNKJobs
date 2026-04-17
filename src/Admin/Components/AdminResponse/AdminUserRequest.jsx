@@ -4,7 +4,7 @@ const AdminUserRequest = () => {
   const [messages, setMessages] = useState([]);
 
   const fetchMessages = () => {
-    fetch("https://lynkjobs-1.onrender.com/admin/allMessages", {
+    fetch("https://api.jobslynk.in/admin/allMessages", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("adminToken")
       }
@@ -30,7 +30,7 @@ const AdminUserRequest = () => {
     return () => clearInterval(interval); // cleanup
   }, []);
   const handleDelete = (id) => {
-  fetch(`https://lynkjobs-1.onrender.com/admin/deleteMessage/${id}`, {
+  fetch(`https://api.jobslynk.in/admin/deleteMessage/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: "Bearer " + localStorage.getItem("adminToken")

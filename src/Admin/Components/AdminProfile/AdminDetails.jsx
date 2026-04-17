@@ -4,7 +4,7 @@ const AdminDetails = () => {
   const [admin, setAdmin] = useState(null);
 
   useEffect(() => {
-    fetch("https://lynkjobs-1.onrender.com/admin", {
+    fetch("https://api.jobslynk.in/admin", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("adminToken")
       }

@@ -17,7 +17,7 @@ const ChangePassword = () => {
     }
     setLoading(true);
     try{
-      const response = await fetch("https://lynkjobs-1.onrender.com/user/settingPassword" ,{
+      const response = await fetch("https://api.jobslynk.in/user/settingPassword" ,{
         method : "PUT",
         headers : {
           "Content-Type" : "application/json",

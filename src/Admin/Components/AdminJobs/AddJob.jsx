@@ -47,7 +47,7 @@ const AddJob = () => {
    const handleAddJob = async (e) => {
     e.preventDefault();
     try {
-        const response = await fetch("https://lynkjobs-1.onrender.com/jobs/addJob" , 
+        const response = await fetch("https://api.jobslynk.in/jobs/addJob" , 
             {
                 method : "POST",
                 headers: {

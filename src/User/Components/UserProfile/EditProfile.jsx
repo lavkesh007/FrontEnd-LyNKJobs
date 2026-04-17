@@ -22,7 +22,7 @@ const EditProfile = () => {
 
     // 🔹 Fetch data
     useEffect(()=>{
-        fetch("https://lynkjobs-1.onrender.com/user/userDetails",{
+        fetch("https://api.jobslynk.in/user/userDetails",{
         headers : {
             Authorization : "Bearer " + localStorage.getItem("token")
         }
@@ -57,7 +57,7 @@ const EditProfile = () => {
         }
         if(loading) return;
     setLoading(true);
-    fetch("https://lynkjobs-1.onrender.com/user/editUser",{
+    fetch("https://api.jobslynk.in/user/editUser",{
         method:"POST",
         headers :{
         Authorization : "Bearer " + localStorage.getItem("token")

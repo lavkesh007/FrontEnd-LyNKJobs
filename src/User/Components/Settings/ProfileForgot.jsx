@@ -18,7 +18,7 @@ const ProfileForgot = () => {
         return;
       }
       setLoading(true);
-      const response = await fetch("https://lynkjobs-1.onrender.com/user/settingVerifyOTP",{
+      const response = await fetch("https://api.jobslynk.in/user/settingVerifyOTP",{
         method : "POST",
         headers : {
           "Content-Type" : "application/json",

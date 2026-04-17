@@ -8,7 +8,7 @@ const Navbar = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
 
   useEffect(() => {
-    fetch("https://lynkjobs-1.onrender.com/user/me", {
+    fetch("https://api.jobslynk.in/user/me", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token")
       }

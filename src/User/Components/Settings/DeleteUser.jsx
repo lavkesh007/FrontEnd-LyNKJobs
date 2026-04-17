@@ -21,7 +21,7 @@ const DeleteUser = () => {
     if(result.isConfirmed){
 
       try {
-        const res = await fetch("https://lynkjobs-1.onrender.com/user/deleteUser",{
+        const res = await fetch("https://api.jobslynk.in/user/deleteUser",{
           method: "DELETE",
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token")

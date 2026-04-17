@@ -8,7 +8,7 @@ const JobsCard = () => {
   const [job, setJob] = useState(null);
   const {id} = useParams();
   useEffect(() => {
-    fetch(`https://lynkjobs-1.onrender.com/jobs/jobDetail/${id}`)
+    fetch(`https://api.jobslynk.in/jobs/jobDetail/${id}`)
       .then((res) => res.json())
       .then((data) => setJob(data))
       .catch((err) => console.error(err));
@@ -26,7 +26,7 @@ const JobsCard = () => {
     });
     if(userreply.isConfirmed){
       try {
-      const res1 = await fetch(`https://lynkjobs-1.onrender.com/user/validateUser`, {
+      const res1 = await fetch(`https://api.jobslynk.in/validateUser`, {
         method : "GET",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token")
@@ -63,7 +63,7 @@ const JobsCard = () => {
 
     if (result.isConfirmed) {
     try {
-      const res = await fetch(`https://lynkjobs-1.onrender.com/user/apply/${id}`, {
+      const res = await fetch(`https://api.jobslynk.in/user/apply/${id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

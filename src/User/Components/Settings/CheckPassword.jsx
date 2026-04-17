@@ -12,7 +12,7 @@ const CheckPassword = () => {
     if(Sloading) return;
     setSLoading(true);
     try {
-      const res = await fetch("https://lynkjobs-1.onrender.com/user/checkOldPassword",{
+      const res = await fetch("https://api.jobslynk.in/user/checkOldPassword",{
         method : "POST",
         headers:{
           "Content-Type" : "application/json",
@@ -49,7 +49,7 @@ const CheckPassword = () => {
     if(loading) return;
     setLoading(true);
     try {
-      const res = await fetch("https://lynkjobs-1.onrender.com/user/settingOTP",{
+      const res = await fetch("https://api.jobslynk.in/user/settingOTP",{
         method : "POST",
         headers : {
           
@@ -108,7 +108,7 @@ const CheckPassword = () => {
         </button>
 
         <h1 
-          className={`cursor-pointer text-red-400 hover:text-red-500 underline text-sm ${loading ? 'cursor-not-allowed text-red-300':'text-red-400 hover:text-red-500'}`}
+          className={`cursor-pointer text-red-400 hover:text-red-500 underline text-sm ${loading ? ' text-red-300 cursor-not-allowed':'text-red-400 hover:text-red-500'}`}
           onClick={sendOTP}
         >
           {loading ? (
