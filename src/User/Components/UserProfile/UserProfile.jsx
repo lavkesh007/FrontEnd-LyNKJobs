@@ -1,19 +1,10 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import LeftSide from './LeftSide'
 import { Outlet } from 'react-router-dom'
 
 const UserProfile = () => {
 
   const [openSidebar, setOpenSidebar] = useState(false);
-  const sidebarRef = useRef(null);
-
-  const handleToggle = () => {
-    setOpenSidebar(!openSidebar);
-
-    setTimeout(() => {
-      sidebarRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, 100);
-  };
 
   return (
     <div className='min-h-screen bg-slate-200'>
@@ -21,32 +12,36 @@ const UserProfile = () => {
       {/* 🔥 Mobile Button */}
       <div className='md:hidden p-3'>
         <button 
-          onClick={handleToggle}
+          onClick={() => setOpenSidebar(true)}
           className='bg-slate-600 text-white px-4 py-2 rounded-lg'
         >
           ☰ Menu
         </button>
       </div>
 
-      <div className='flex flex-col md:flex-row min-h-screen'>
-
-        {/* 🔥 Sidebar */}
+      {/* 🔥 Overlay */}
+      {openSidebar && (
         <div 
-          ref={sidebarRef}
-          className={`
-            w-full md:w-[250px]
-            ${openSidebar ? "block" : "hidden"}
-            md:block
-          `}
-        >
-          <LeftSide/>
-        </div>
+          className="fixed inset-0 bg-black/40 z-40 md:hidden"
+          onClick={() => setOpenSidebar(false)}
+        ></div>
+      )}
 
-        {/* 🔥 Content */}
-        <div className='flex-1 p-4'>
-          <Outlet/>
-        </div>
+      {/* 🔥 Sidebar (FIXED) */}
+      <div
+        className={`
+          fixed top-0 left-0 h-screen w-[250px] bg-white z-50
+          transform transition-transform duration-300
+          ${openSidebar ? "translate-x-0" : "-translate-x-full"}
+          md:translate-x-0
+        `}
+      >
+        <LeftSide/>
+      </div>
 
+      {/* 🔥 Main Content */}
+      <div className='md:ml-[250px] p-4'>
+        <Outlet/>
       </div>
 
     </div>
