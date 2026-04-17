@@ -26,7 +26,7 @@ const JobsCard = () => {
     });
     if(userreply.isConfirmed){
       try {
-      const res1 = await fetch(`https://api.jobslynk.in/validateUser`, {
+      const res1 = await fetch(`https://api.jobslynk.in/user/validateUser`, {
         method : "GET",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token")
