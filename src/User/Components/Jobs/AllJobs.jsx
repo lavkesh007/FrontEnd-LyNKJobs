@@ -58,7 +58,7 @@ const AllJobs = () => {
             <div className="flex flex-col items-center mt-2 mb-4">
               <img
                 className="w-10 h-10 rounded-full"
-                src={data.logo}
+                src={data?.logo && data.logo!=="na" ? data.logo : "https://suesys.com/assets/website/images/company-logo-default.png"}
                 alt=""
               />
               <h1 className="font-semibold text-slate-600 text-sm mt-2 text-center">

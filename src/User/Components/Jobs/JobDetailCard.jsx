@@ -116,7 +116,7 @@ const JobsCard = () => {
         <div className="flex flex-col items-center mb-4">
           <img
             className="w-16 h-16 rounded-full"
-            src={job.logo}
+            src={job?.logo ? job.logo : "https://suesys.com/assets/website/images/company-logo-default.png"}
             alt=""
           />
           <h1 className="text-xl font-semibold mt-2">{job.role}</h1>

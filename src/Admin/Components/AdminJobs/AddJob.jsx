@@ -288,7 +288,7 @@ const AddJob = () => {
                     name = "logo"
                     placeholder="Enter Logo Url"
                     className="w-72 p-2 mb-4 border rounded-full text-center"
-                    required
+                    
                     value={job.logo}
                     onChange={handleChange}
                     />
