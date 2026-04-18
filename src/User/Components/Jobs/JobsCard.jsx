@@ -75,7 +75,7 @@ const AllJobsCard = () => {
               </div>
 
               <div className="flex justify-between">
-                <span className="font-medium">Expiry:</span>
+                <span className="font-medium">Last Date:</span>
                 <span>{data.expireDate}</span>
               </div>
 

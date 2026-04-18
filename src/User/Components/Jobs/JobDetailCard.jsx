@@ -148,7 +148,7 @@ const JobsCard = () => {
             </div>
 
             <div className='flex gap-32'>
-              <span className="font-medium">Passout:</span>
+              <span className="font-medium">Passout Year:</span>
               <span>{job.passoutYear}</span>
             </div>
 
@@ -167,7 +167,7 @@ const JobsCard = () => {
             </div>
 
             <div className='flex gap-24'>
-              <span className="font-medium">Expiry Date:</span>
+              <span className="font-medium">Last Date:</span>
               <span>{job.expireDate}</span>
             </div>
 
