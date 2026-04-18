@@ -86,6 +86,8 @@ const ChangePassword = () => {
           placeholder="Enter Password"
           className="w-full max-w-xs p-2 mb-3 border rounded-full text-center bg-white/40"
           required
+          pattern="^[a-zA-Z]+[^a-zA-Z0-9]+[0-9]+$"
+          title="Password must be like abc@123 or xyz#456 (letters + special char + numbers)"
           value={Password}
           onChange={(e)=>setPassword(e.target.value)}
         />

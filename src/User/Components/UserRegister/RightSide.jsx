@@ -145,6 +145,8 @@ const RegisterMiddleContent = () => {
                         placeholder="Enter password"
                         className="w-full p-2 mb-4 border rounded-full text-center"
                         required
+                        pattern="^[a-zA-Z]+[^a-zA-Z0-9]+[0-9]+$"
+                        title="Password must be like abc@123 or xyz#456 (letters + special char + numbers)"
                         value={Password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
