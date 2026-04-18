@@ -53,7 +53,7 @@ const JobsCard = () => {
       return;
     }
     const result =  await Swal.fire({
-      title: 'Are you applied the Job?',
+      title: 'Have you applied the Job?',
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Yes',
