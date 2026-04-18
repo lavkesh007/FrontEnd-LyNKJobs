@@ -34,6 +34,7 @@ import AdminProtectiveRoute from './Admin/Components/ProtectiveRoute/AdminProtec
 import UserProtectedRoute from './User/Components/ProtectedRoute/UserProtectedRoute';
 import ApplyInfo from './Admin/Components/UserJobApplyInfo/ApplyInfo';
 import UserInformation from './Admin/Components/UserInfo/UserInformation';
+import MailSender from './Admin/Components/SendingMail/MailSender';
 
 const App = () => {
   return (
@@ -109,6 +110,7 @@ const App = () => {
           <Route path="userMessage" element={<AdminUserRequest/>}/>
           <Route path="userApplyInfo" element={<ApplyInfo/>}/>
           <Route path='userInfo' element={<UserInformation/>}/>
+          <Route path='mailSender' element={<MailSender/>}/>
           </Route>
         
 
