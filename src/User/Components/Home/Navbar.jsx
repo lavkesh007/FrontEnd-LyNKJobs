@@ -32,10 +32,10 @@ const Navbar = () => {
 
   return (
     <div id='home' className="w-full">
-      <div className="flex justify-between items-center px-4 md:px-10 py-4 bg-white shadow">
+      <div className="flex justify-between items-center px-4 md:px-10 py-1 bg-white shadow">
 
         {/* 🔥 Logo */}
-        <div className="flex items-center bg-black/10 rounded-2xl p-2 w-auto md:w-56 text-center flex-col">
+        <div className="flex items-center rounded-2xl p-2 w-auto md:w-56 text-center flex-col">
           
           <h1 className='text-xl md:text-3xl text-slate-800 font-serif font-bold'>
             LyNK <span className='text-orange-600'>Job's</span>
