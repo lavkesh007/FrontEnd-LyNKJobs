@@ -12,6 +12,7 @@ const McqsTopics = () => {
   const [started, setStarted] = useState(false);
   const [answers, setAnswers] = useState({});
   const [showResult, setShowResult] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const topics = ["java", "sql", "aptitude", "python", "cpp", "javascript"];
 
@@ -25,39 +26,65 @@ const McqsTopics = () => {
   };
 
   // 👉 start quiz
-  const handleStart = () => {
-    fetch(`https://lynkjobs-1.onrender.com/mcqs/${selectedSubject}`, {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token")
-      }
-    })
-      .then(res => {
-        if (res.status === 401 || res.status === 403) {
-          Swal.fire({
-            title: "Login First",
-            icon: "error"
-          });
-          navigate("/user/login");
-          return null;
+  const handleStart = async () => {
+
+    if (!selectedSubject) {
+      Swal.fire("Select Subject First");
+      return;
+    }
+
+    if (loading) return;
+
+    setLoading(true);
+
+    try {
+      const res = await fetch(`https://lynkjobs-1.onrender.com/mcqs/${selectedSubject}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")
         }
-        return res.json();
-      })
-      .then(data => {
-        if (!data) return;
+      });
+
+      if (res.status === 401 || res.status === 403) {
+        setLoading(false);
+        Swal.fire({
+          title: "Login First",
+          icon: "error"
+        });
+        navigate("/user/login");
+        return;
+      }
+
+      if (!res.ok) {
+        throw new Error("Server Error");
+      }
+
+      const data = await res.json();
+
+      if (!Array.isArray(data) || data.length === 0) {
+        Swal.fire("No Questions Available", "", "warning");
+        setMcqs([]);
+        setStarted(false);
+      } else {
         setMcqs(data);
         setStarted(true);
-      })
-      .catch(err => console.error(err));
+      }
+
+    } catch (err) {
+      console.error(err);
+      Swal.fire("Server Error or Backend Down", "", "error");
+    } finally {
+      setLoading(false); // ✅ FIXED
+    }
   };
 
-  // ✅ store answer
+  // 👉 select option
   const handleOptionChange = (qIndex, option) => {
     const letter = option.trim().charAt(0);
 
     setAnswers({
       ...answers,
       [qIndex]: {
-        letter: letter,
+        letter,
         text: option
       }
     });
@@ -77,7 +104,7 @@ const McqsTopics = () => {
     setShowResult(false);
   };
 
-  // ✅ score
+  // 👉 score
   const score = mcqs.reduce((acc, q, index) => {
     const userAns = answers[index]?.letter;
     const correctAns = q.answer?.trim().charAt(0);
@@ -87,7 +114,7 @@ const McqsTopics = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
 
-      <div className="sticky top-0 shadow-md z-50 bg-white">
+      <div className="sticky top-0 shadow-md bg-white">
         <Navbar />
       </div>
 
@@ -116,20 +143,21 @@ const McqsTopics = () => {
           </div>
         )}
 
-        {/* START */}
+        {/* START BUTTON */}
         {!started && selectedSubject && (
           <div className="flex justify-center mt-8">
             <button
               onClick={handleStart}
+              disabled={loading}
               className="px-8 py-3 bg-green-500 text-white text-lg rounded-full shadow-lg hover:bg-green-600 transition"
             >
-              ▶ Start {selectedSubject.toUpperCase()} Quiz
+              {loading ? "Starting..." : `▶ Start ${selectedSubject.toUpperCase()} Quiz`}
             </button>
           </div>
         )}
 
         {/* QUIZ */}
-        {started && (
+        {started && mcqs.length > 0 && (
           <div className="mt-8">
 
             <h2 className="text-2xl font-bold text-center mb-6 text-gray-700">
@@ -137,10 +165,7 @@ const McqsTopics = () => {
             </h2>
 
             {mcqs.map((q, index) => (
-              <div
-                key={index}
-                className="bg-white shadow-lg rounded-xl p-6 mb-6 border"
-              >
+              <div key={index} className="bg-white shadow-lg rounded-xl p-6 mb-6 border">
 
                 <p className="font-semibold text-lg mb-3">
                   {index + 1}. {q.question}
@@ -163,25 +188,11 @@ const McqsTopics = () => {
                   return (
                     <div
                       key={i}
-                      onClick={() => {
-                        if (!showResult) handleOptionChange(index, optionText);
-                      }}
-                      className={`
-                        p-4 border rounded-lg mb-2 flex items-center gap-3 cursor-pointer
-                        transition hover:scale-[1.02] hover:bg-blue-100
-                        ${style}
-                        ${answers[index]?.letter === letter ? "bg-blue-200 border-blue-500" : ""}
-                      `}
+                      onClick={() => !showResult && handleOptionChange(index, optionText)}
+                      className={`p-4 border rounded-lg mb-2 cursor-pointer transition hover:bg-blue-100 ${style}
+                      ${answers[index]?.letter === letter ? "bg-blue-200 border-blue-500" : ""}`}
                     >
-                      <input
-                        type="radio"
-                        name={`q-${index}`}
-                        checked={answers[index]?.letter === letter}
-                        readOnly
-                      />
-                      <label className="w-full cursor-pointer">
-                        {optionText}
-                      </label>
+                      {optionText}
                     </div>
                   );
                 })}
@@ -190,18 +201,16 @@ const McqsTopics = () => {
                 {showResult && (
                   <div className="mt-3">
                     {answers[index]?.letter === q.answer?.trim().charAt(0) ? (
-                      <p className="text-green-600 font-semibold">
-                        ✅ Correct
-                      </p>
+                      <p className="text-green-600 font-semibold">✅ Correct</p>
                     ) : (
-                      <div>
+                      <>
                         <p className="text-red-600">
                           ❌ Your Answer: {answers[index]?.text || "Not Answered"}
                         </p>
                         <p className="text-green-600">
                           ✅ Correct Answer: {q.answer}
                         </p>
-                      </div>
+                      </>
                     )}
                   </div>
                 )}
@@ -214,39 +223,35 @@ const McqsTopics = () => {
               <div className="flex justify-center">
                 <button
                   onClick={handleSubmit}
-                  className="px-8 py-3 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition"
+                  className="px-8 py-3 bg-blue-500 text-white rounded-full"
                 >
                   Submit Quiz
                 </button>
               </div>
             )}
 
-            {/* RESULT */}
+            {/* FINAL RESULT */}
             {showResult && (
               <div className="mt-8 text-center bg-white p-6 rounded-xl shadow-lg">
-
                 <h3 className="text-2xl font-bold text-green-600">
                   🎯 Score: {score} / {mcqs.length}
                 </h3>
 
                 <div className="mt-4 flex justify-center gap-4">
-
                   <button
-                    className="bg-orange-500 hover:bg-orange-600 px-6 py-2 rounded-lg text-white"
+                    className="bg-orange-500 px-6 py-2 rounded text-white"
                     onClick={() => navigate(-1)}
                   >
                     Back
                   </button>
 
                   <button
-                    className="bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded-lg text-white"
+                    className="bg-blue-500 px-6 py-2 rounded text-white"
                     onClick={handleRestart}
                   >
                     Restart
                   </button>
-
                 </div>
-
               </div>
             )}
 
