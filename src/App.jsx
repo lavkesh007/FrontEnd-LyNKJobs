@@ -115,7 +115,7 @@ const App = () => {
           <Route path='mailSender' element={<MailSender/>}/>
           </Route>
         <Route path='/user/practice' element={<McqsMain/>}/>
-         <Route path='/user/stats' element={<HomeStats/>}/>
+         {/* <Route path='/user/stats' element={<HomeStats/>}/> */}
 
         <Route path="*" element={
             <div className="flex items-center justify-center h-screen text-2xl">
