@@ -58,6 +58,9 @@ const Navbar = () => {
           <p className="cursor-pointer text-gray-600 text-lg hover:text-orange-500" onClick={scrollToAbout}>
             About
           </p>
+          <p className="cursor-pointer text-gray-600 text-lg hover:text-orange-500" onClick={()=> navigate('/user/practice')} >
+            Practice
+          </p>
 
           <p className="cursor-pointer text-gray-600 text-lg hover:text-orange-500" onClick={()=>{
             navigate('/user/contact');

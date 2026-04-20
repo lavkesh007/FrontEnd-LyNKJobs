@@ -35,6 +35,7 @@ import UserProtectedRoute from './User/Components/ProtectedRoute/UserProtectedRo
 import ApplyInfo from './Admin/Components/UserJobApplyInfo/ApplyInfo';
 import UserInformation from './Admin/Components/UserInfo/UserInformation';
 import MailSender from './Admin/Components/SendingMail/MailSender';
+import McqsMain from './User/Components/MCQs/McqsMain';
 
 const App = () => {
   return (
@@ -112,7 +113,7 @@ const App = () => {
           <Route path='userInfo' element={<UserInformation/>}/>
           <Route path='mailSender' element={<MailSender/>}/>
           </Route>
-        
+        <Route path='/user/practice' element={<McqsMain/>}/>
 
         <Route path="*" element={
             <div className="flex items-center justify-center h-screen text-2xl">

@@ -23,7 +23,7 @@ const AdminNavbar = () => {
    
         <div className='bg-white w-screen  flex'> 
             <div className='flex flex-row justify-between w-full px-3 py-1 content-center'>
-                <div className='flex  px-5 bg-black/20 rounded-2xl  '>
+                <div className='flex  px-5  rounded-2xl  '>
                      <h1 className='text-2xl text-slate-700 font-serif font-semibold'>LyNK <span className='text-2xl text-orange-500 font-serif font-semibold'>Job's</span></h1>
                 </div>
                 <div className='flex gap-2 flex-row items-center'>
