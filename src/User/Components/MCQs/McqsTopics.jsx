@@ -45,7 +45,6 @@ const McqsTopics = () => {
       });
 
       if (res.status === 401 || res.status === 403) {
-        setLoading(false);
         Swal.fire({
           title: "Login First",
           icon: "error"
@@ -55,7 +54,8 @@ const McqsTopics = () => {
       }
 
       if (!res.ok) {
-        throw new Error("Server Error");
+        Swal.fire("Server Error", "", "error");
+        return;
       }
 
       const data = await res.json();
@@ -73,7 +73,7 @@ const McqsTopics = () => {
       console.error(err);
       Swal.fire("Server Error or Backend Down", "", "error");
     } finally {
-      setLoading(false); // ✅ FIXED
+      setLoading(false);
     }
   };
 
@@ -81,13 +81,13 @@ const McqsTopics = () => {
   const handleOptionChange = (qIndex, option) => {
     const letter = option.trim().charAt(0);
 
-    setAnswers({
-      ...answers,
+    setAnswers(prev => ({
+      ...prev,
       [qIndex]: {
         letter,
         text: option
       }
-    });
+    }));
   };
 
   // 👉 submit
@@ -107,7 +107,7 @@ const McqsTopics = () => {
   // 👉 score
   const score = mcqs.reduce((acc, q, index) => {
     const userAns = answers[index]?.letter;
-    const correctAns = q.answer?.trim().charAt(0);
+    const correctAns = q.answer?.trim()?.charAt(0);
     return userAns === correctAns ? acc + 1 : acc;
   }, 0);
 
@@ -171,14 +171,14 @@ const McqsTopics = () => {
                   {index + 1}. {q.question}
                 </p>
 
-                {q.options.split("|").map((opt, i) => {
+                {(q.options || "").split("|").map((opt, i) => {
                   const optionText = opt.trim();
                   const letter = optionText.charAt(0);
 
                   let style = "";
 
                   if (showResult) {
-                    if (letter === q.answer?.trim().charAt(0)) {
+                    if (letter === q.answer?.trim()?.charAt(0)) {
                       style = "bg-green-100 border-green-500";
                     } else if (letter === answers[index]?.letter) {
                       style = "bg-red-100 border-red-500";
@@ -200,7 +200,7 @@ const McqsTopics = () => {
                 {/* RESULT */}
                 {showResult && (
                   <div className="mt-3">
-                    {answers[index]?.letter === q.answer?.trim().charAt(0) ? (
+                    {answers[index]?.letter === q.answer?.trim()?.charAt(0) ? (
                       <p className="text-green-600 font-semibold">✅ Correct</p>
                     ) : (
                       <>
