@@ -7,6 +7,7 @@ import Main from "../Aboutus/Main";
 import Searchbar from "./SearchBar";
 import FooterMain from "../Footer/FooterMain";
 import ContactMain from "../Contact/ContactMain"
+import HomeStats from "../Stats/HomeStats";
 const Home = () => {   // ✅ Capitalized
   const location = useLocation();
   const data = location.state;
@@ -29,7 +30,7 @@ const Home = () => {   // ✅ Capitalized
       <div className="px-5 py-10">
         <JobsCard />
       </div>
-
+      <HomeStats/>
      
       <Main />
       

@@ -38,7 +38,7 @@ const McqsTopics = () => {
     setLoading(true);
 
     try {
-      const res = await fetch(`https://lynkjobs-1.onrender.com/mcqs/${selectedSubject}`, {
+      const res = await fetch(`https://api.jobslynk.in/mcqs/${selectedSubject}`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token")
         }

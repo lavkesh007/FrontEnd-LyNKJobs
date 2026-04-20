@@ -36,6 +36,7 @@ import ApplyInfo from './Admin/Components/UserJobApplyInfo/ApplyInfo';
 import UserInformation from './Admin/Components/UserInfo/UserInformation';
 import MailSender from './Admin/Components/SendingMail/MailSender';
 import McqsMain from './User/Components/MCQs/McqsMain';
+import HomeStats from './User/Components/Stats/HomeStats';
 
 const App = () => {
   return (
@@ -114,6 +115,7 @@ const App = () => {
           <Route path='mailSender' element={<MailSender/>}/>
           </Route>
         <Route path='/user/practice' element={<McqsMain/>}/>
+         <Route path='/user/stats' element={<HomeStats/>}/>
 
         <Route path="*" element={
             <div className="flex items-center justify-center h-screen text-2xl">
