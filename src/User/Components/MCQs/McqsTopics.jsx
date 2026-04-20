@@ -26,7 +26,7 @@ const McqsTopics = () => {
 
   // 👉 start quiz
   const handleStart = () => {
-    fetch(`https://jobslynk.in/mcqs/${selectedSubject}`, {
+    fetch(`https://lynkjobs-1.onrender.com/mcqs/${selectedSubject}`, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token")
       }
