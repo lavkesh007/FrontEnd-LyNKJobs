@@ -14,7 +14,6 @@ const Navbar = () => {
       }
     })
       .then(res => {
-        console.log("STATUS:", res.status);
         if (!res.ok) throw new Error();
         return res.json();
       })
@@ -22,30 +21,33 @@ const Navbar = () => {
       .catch(() => setUser(null));
   }, []);
 
-  const scrollToAbout = ()=>{
-    const section = document.getElementById("about");
+  const scrollToAbout = () => {
     navigate("/?scroll=about");
-    if(section){
-      section.scrollIntoView({behavior : "smooth"})
-    }
-  }
+    setTimeout(() => {
+      const section = document.getElementById("about");
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 300);
+  };
 
   return (
     <div id='home' className="w-full">
-      <div className="flex justify-between items-center px-4 md:px-10 py-1 bg-white shadow">
+      
+      {/* 🔥 TOP NAVBAR */}
+      <div className="flex justify-between items-center px-4 md:px-10 py-2 bg-white shadow-md">
 
-        {/* 🔥 Logo */}
-        <div className="flex items-center rounded-2xl p-2 w-auto md:w-56 text-center flex-col">
-          
+        {/* LOGO */}
+        <div className="flex items-center">
           <h1 className='text-xl md:text-3xl text-slate-800 font-serif font-bold'>
             LyNK <span className='text-orange-600'>Job's</span>
           </h1>
         </div>
 
-        {/* 🔥 Desktop Menu */}
+        {/* 🔥 DESKTOP MENU */}
         <div className="hidden md:flex gap-6 items-center">
 
-          <p className="cursor-pointer text-gray-600 text-lg hover:text-orange-500"
+          <p className="cursor-pointer text-gray-600 text-lg hover:text-orange-500 font-medium"
             onClick={() => {
               navigate("/");
               setTimeout(() => {
@@ -55,30 +57,36 @@ const Navbar = () => {
             Home
           </p>
 
-          <p className="cursor-pointer text-gray-600 text-lg hover:text-orange-500" onClick={scrollToAbout}>
+          <p className="cursor-pointer text-gray-600 text-lg hover:text-orange-500 font-medium"
+            onClick={scrollToAbout}>
             About
           </p>
-          <p className="cursor-pointer text-gray-600 text-lg hover:text-orange-500" onClick={()=> navigate('/user/practice')} >
+
+          <p className="cursor-pointer text-gray-600 text-lg hover:text-orange-500 font-medium"
+            onClick={() => {
+              navigate('/user/practice');
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}>
             Practice
           </p>
 
-          <p className="cursor-pointer text-gray-600 text-lg hover:text-orange-500" onClick={()=>{
-            navigate('/user/contact');
-            setTimeout(() => {
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }, 1);
-          }}>
+          <p className="cursor-pointer text-gray-600 text-lg hover:text-orange-500 font-medium"
+            onClick={() => {
+              navigate('/user/contact');
+              setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }, 100);
+            }}>
             Contact
           </p>
 
-          {/* 🔥 User Section */}
+          {/* USER */}
           {user ? (
             <div
               className="relative"
               onMouseEnter={() => setOpen(true)}
               onMouseLeave={() => setOpen(false)}
             >
-
               <div className="cursor-pointer font-semibold text-orange-600 flex items-center gap-2">
                 <span className="text-lg">{user.userName}</span>
 
@@ -95,7 +103,6 @@ const Navbar = () => {
 
               {open && (
                 <div className="absolute right-0 w-44 bg-white border rounded-lg shadow-lg overflow-hidden">
-
                   <p
                     className="p-2 hover:bg-orange-100 cursor-pointer"
                     onClick={() => navigate("/user/profile")}
@@ -120,7 +127,6 @@ const Navbar = () => {
                   >
                     Logout
                   </p>
-
                 </div>
               )}
             </div>
@@ -135,30 +141,32 @@ const Navbar = () => {
 
         </div>
 
-        {/* 🔥 Mobile Button */}
+        {/* 🔥 MOBILE BUTTON */}
         <div className="md:hidden">
-          <button onClick={() => setMobileMenu(!mobileMenu)} className="text-2xl">
+          <button
+            onClick={() => setMobileMenu(!mobileMenu)}
+            className="text-2xl font-bold"
+          >
             ☰
           </button>
         </div>
+
       </div>
 
-      {/* 🔥 Mobile Menu */}
+      {/* 🔥 MOBILE MENU */}
       {mobileMenu && (
-        <div className="md:hidden bg-white shadow px-4 py-3 flex flex-col gap-3">
+        <div className="md:hidden bg-white shadow-lg px-6 py-5 flex flex-col gap-4 text-lg font-medium">
 
-          <p className="cursor-pointer text-gray-600"
+          <p className="cursor-pointer text-gray-700 hover:text-orange-500"
             onClick={() => {
               navigate("/");
               setMobileMenu(false);
-              setTimeout(() => {
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }, 100);
+              window.scrollTo({ top: 0, behavior: "smooth" });
             }}>
             Home
           </p>
 
-          <p className="cursor-pointer text-gray-600"
+          <p className="cursor-pointer text-gray-700 hover:text-orange-500"
             onClick={() => {
               scrollToAbout();
               setMobileMenu(false);
@@ -166,23 +174,38 @@ const Navbar = () => {
             About
           </p>
 
-          <p className="cursor-pointer text-gray-600"
-            onClick={()=>{
+          {/* ✅ FIXED PRACTICE */}
+          <p className="cursor-pointer text-gray-700 hover:text-orange-500"
+            onClick={() => {
+              navigate('/user/practice');
+              setMobileMenu(false);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}>
+            Practice
+          </p>
+
+          <p className="cursor-pointer text-gray-700 hover:text-orange-500"
+            onClick={() => {
               navigate('/user/contact');
               setMobileMenu(false);
-              setTimeout(() => {
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }, 1);
+              window.scrollTo({ top: 0, behavior: "smooth" });
             }}>
             Contact
           </p>
 
+          {/* USER SECTION */}
           {user ? (
             <>
-              <p onClick={()=>navigate("/user/profile")} className="cursor-pointer">Profile</p>
-              <p onClick={()=>navigate("/user/alljobs")} className="cursor-pointer">Jobs</p>
+              <p onClick={() => navigate("/user/profile")} className="cursor-pointer hover:text-orange-500">
+                Profile
+              </p>
+
+              <p onClick={() => navigate("/user/alljobs")} className="cursor-pointer hover:text-orange-500">
+                Jobs
+              </p>
+
               <p className="text-red-500 cursor-pointer"
-                onClick={()=>{
+                onClick={() => {
                   localStorage.removeItem("token");
                   setUser(null);
                   navigate("/");
@@ -192,7 +215,7 @@ const Navbar = () => {
             </>
           ) : (
             <button
-              className="bg-orange-500 text-white py-2 rounded"
+              className="bg-orange-500 text-white py-2 rounded-lg"
               onClick={() => navigate("/user/login")}
             >
               Login
