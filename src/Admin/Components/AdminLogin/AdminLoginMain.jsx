@@ -1,25 +1,27 @@
 import React from 'react'
 import AdminLoginLeft from './AdminLoginLeft'
 import AdminLoginRight from './AdminLoginRight'
-import { Outlet } from 'react-router-dom'
 
-const AdminLofinMain = () => {
+const AdminLoginMain = () => {
   return (
-    <div className=' h-screen bg-orange-200  flex felx-col justify-center  items-center'>
-      <div className='flex w-[1000px] h-[700px]   '> 
-        <div className='border w-fit rounded-2xl bg-orange-300 flex'>
-            <div className='w-1/2 h-full '>
-            <AdminLoginLeft/>
-          </div>
-          <div className='w-1/2 h-full'>
-            <AdminLoginRight/>
-          </div>
+    <div className='min-h-screen flex items-center justify-center bg-slate-100 p-4'>
+
+      <div className='w-full max-w-5xl bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col md:flex-row'>
+
+        {/* Left Side (Hidden on Mobile) */}
+        <div className='md:w-1/2 h-64 md:h-auto'>
+          <AdminLoginLeft/>
         </div>
-          
+
+        {/* Right Side */}
+        <div className='md:w-1/2'>
+          <AdminLoginRight/>
+        </div>
+
       </div>
-      
+
     </div>
   )
 }
 
-export default AdminLofinMain
+export default AdminLoginMain

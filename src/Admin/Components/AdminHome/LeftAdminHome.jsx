@@ -1,10 +1,12 @@
-import React, {useState, useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom';
+import React,{useState,useEffect} from 'react'
+import { useNavigate,useLocation } from 'react-router-dom';
 
-const LeftAdminHome = () => {
+const LeftAdminHome = ({ closeSidebar }) => {
+
     const [admin,setAdmin] = useState(null);
     const navigate = useNavigate();
     const location = useLocation();
+
     useEffect(()=> {
         fetch("https://api.jobslynk.in/admin",{
             headers: {
@@ -18,31 +20,57 @@ const LeftAdminHome = () => {
         .then(data => setAdmin(data))
         .catch(() => setAdmin(null));
     },[]);
+
+    const handleNav = (path) => {
+        if(admin){
+            navigate(path);
+            closeSidebar && closeSidebar(); // close on mobile
+        } else {
+            navigate('/admin/login');
+        }
+    }
+
   return (
-    <div className='bg-black/40 h-full flex flex-col justify-between'>
+    <div className='bg-black/40 h-full flex flex-col justify-between text-white'>
 
-      <div className='flex flex-col  gap-3 p-3'>
-            <div className={`w-full hover:bg-black/20 h-12 rounded-lg text-lg p-2 cursor-pointer ${location.pathname==="/admin/dashboard" ? "bg-black/20" : "hover:bg-black/20"}`} onClick={()=> admin ? navigate("") : navigate('/admin/login')}>Dashboard</div>
-            <div className={`w-full hover:bg-black/20 h-12 rounded-lg text-lg p-2 cursor-pointer ${location.pathname==="/admin/dashboard/profile" ? "bg-black/20" : "hover:bg-black/20"}`} onClick={()=> admin ? navigate("/admin/dashboard/profile") : navigate('/admin/login')}>Profile</div>
-            <div className={`w-full hover:bg-black/20 h-12 rounded-lg text-lg p-2 cursor-pointer ${location.pathname==="/admin/dashboard/addJob" ? "bg-black/20 " : "hover:bg-black/20"}`} onClick={()=> admin ? navigate('/admin/dashboard/addJob') : navigate('/admin/login')}>Add Jobs</div>
-            <div className={`w-full hover:bg-black/20 h-12 rounded-lg text-lg p-2 cursor-pointer ${location.pathname==="/admin/dashboard/deleteJob" ? "bg-black/20 " : "hover:bg-black/20"}`} onClick={()=> admin ? navigate("/admin/dashboard/deleteJob") : navigate('/admin/login')}>Delete Jobs</div>
-            <div className={`w-full hover:bg-black/20 h-12 rounded-lg text-lg p-2 cursor-pointer ${location.pathname==="/admin/dashboard/userMessage" ? "bg-black/20" : "hover:bg-black/20"}`} onClick={()=> admin ? navigate("/admin/dashboard/userMessage") : navigate('/admin/login')}>User Message</div>
-            <div className={`w-full hover:bg-black/20 h-12 rounded-lg text-lg p-2 cursor-pointer ${location.pathname==="/admin/dashboard/userApplyInfo" ? "bg-black/20" : "hover:bg-black/20"}`} onClick={()=> admin ? navigate("/admin/dashboard/userApplyInfo") : navigate('/admin/login')}>User Applied for Job</div>
-            <div className={`w-full hover:bg-black/20 h-12 rounded-lg text-lg p-2 cursor-pointer ${location.pathname==="/admin/dashboard/userInfo" ? "bg-black/20" : "hover:bg-black/20"}`} onClick={()=> admin ? navigate("/admin/dashboard/userInfo") : navigate('/admin/login')}>User Information</div>
-            <div className={`w-full hover:bg-black/20 h-12 rounded-lg text-lg p-2 cursor-pointer ${location.pathname==="/admin/dashboard/mailSender" ? "bg-black/20" : "hover:bg-black/20"}`} onClick={()=> admin ? navigate("/admin/dashboard/mailSender") : navigate('/admin/login')}>Email Sender</div>
+      <div className='flex flex-col gap-2 p-3'>
 
+        {[
+          {name:"Dashboard", path:"/admin/dashboard"},
+          {name:"Profile", path:"/admin/dashboard/profile"},
+          {name:"Add Jobs", path:"/admin/dashboard/addJob"},
+          {name:"Delete Jobs", path:"/admin/dashboard/deleteJob"},
+          {name:"User Message", path:"/admin/dashboard/userMessage"},
+          {name:"User Applied", path:"/admin/dashboard/userApplyInfo"},
+          {name:"User Info", path:"/admin/dashboard/userInfo"},
+          {name:"Email Sender", path:"/admin/dashboard/mailSender"},
+        ].map((item, i) => (
+          <div
+            key={i}
+            className={`p-2 rounded-lg cursor-pointer text-sm md:text-lg 
+            ${location.pathname === item.path ? "bg-black/30" : "hover:bg-black/20"}`}
+            onClick={() => handleNav(item.path)}
+          >
+            {item.name}
+          </div>
+        ))}
 
-            
       </div>
-      <div className='gap-3 p-3'>
-        <hr className='py-1'/>
-          <div className='w-full hover:bg-red-700/30 h-12 rounded-lg text-lg p-2 cursor-pointer' onClick={()=>{
-                localStorage.removeItem("adminToken");
-                setAdmin(null);
-                navigate("/admin/login")
-            }}>Logout</div>
+
+      <div className='p-3'>
+        <hr className='mb-2'/>
+        <div 
+          className='p-2 rounded-lg cursor-pointer hover:bg-red-700/40'
+          onClick={()=>{
+            localStorage.removeItem("adminToken");
+            setAdmin(null);
+            navigate("/admin/login");
+          }}
+        >
+          Logout
+        </div>
       </div>
-    
+
     </div>
   )
 }

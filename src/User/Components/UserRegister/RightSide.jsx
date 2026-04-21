@@ -1,9 +1,10 @@
 import React from 'react'
-import{useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 
 const RegisterMiddleContent = () => {
+
     const navigate = useNavigate();
 
     const [name,setName] = useState("");
@@ -14,184 +15,188 @@ const RegisterMiddleContent = () => {
     const [RePassword,setRePassword] = useState("");
     const [loading, setLoading] = useState(false);
 
+    // 👁️ Password visibility
+    const [showPassword, setShowPassword] = useState(false);
+    const [showRePassword, setShowRePassword] = useState(false);
+
     const handleRegister = async(e) =>{
         e.preventDefault();
         if (loading) return;
+
         setLoading(true);
+
         try{
             if(Password !== RePassword){
                 Swal.fire({
                     title:'Password Mismatch!!',
-                    text:'Enter the Similar Password!!!',
-                    icon:'warning',
-                    timer:2000
+                    icon:'warning'
                 })
                 setLoading(false);
                 return;
-            }else{
-                const response = await fetch("https://api.jobslynk.in/user/registerEmailOtp",{
-                    method : "POST",
-                    headers:{
-                        "Content-Type" : "application/json"
-                    },
-                    body: JSON.stringify({
-                        userName : name,
-                        userEmail : email,
-                        phoneNo : phone,
-                        dob : DoB,
-                        password : Password
-                    })
+            }
+
+            const response = await fetch("https://api.jobslynk.in/user/registerEmailOtp",{
+                method : "POST",
+                headers:{ "Content-Type" : "application/json" },
+                body: JSON.stringify({
+                    userName : name,
+                    userEmail : email,
+                    phoneNo : phone,
+                    dob : DoB,
+                    password : Password
+                })
+            });
+
+            const data = await response.json();
+
+            if(response.ok){
+                Swal.fire({
+                    text:'OTP Sent Successfully 🚀'
                 });
 
-                const data = await response.json();
+                navigate("/user/register/otp",{
+                    state:{ name, email, phone, DoB, Password }
+                });
 
-                if(response.ok){
-                    Swal.fire({
-                        text:'OTP Send on your Email!!!',
-                    })
-
-                    navigate("/user/register/otp",{
-                        state:{ name, email, phone, DoB, Password }
-                    });
-
-                }else{
-                    Swal.fire({
-                        text: data.message,
-                        icon : 'warning'
-                    })
-                    navigate("/user/login")
-                }
+            }else{
+                Swal.fire({
+                    text: data.message,
+                    icon : 'warning'
+                })
+                navigate("/user/login")
             }
+
         }catch(error){
-            alert(error)
             console.error(error);
         }finally {
-            setLoading(false); // stop loading always
+            setLoading(false);
         }
     }
 
   return (
-    <div className='w-full h-full p-4 flex flex-col items-center justify-center'>
+    <div className='w-full h-full flex items-center justify-center p-4'>
 
-        <h1 className='text-xl md:text-2xl text-slate-500 text-center'>
-          Welcome to 
-          <span className='text-2xl md:text-3xl text-gray-600 font-serif'> Lynk</span>
-          <span className='text-2xl md:text-3xl text-red-400 font-serif'> Job's</span>
+      <div className='w-full max-w-md bg-white/80 backdrop-blur-md p-6 rounded-2xl shadow-lg'>
+
+        {/* Heading */}
+        <h1 className='text-center text-lg sm:text-xl font-semibold text-gray-600 mb-4'>
+          Create Account on <br />
+          <span className='text-2xl font-serif font-bold'>
+            Lynk <span className='text-orange-500'>Job's</span>
+          </span>
         </h1>
 
-        <form onSubmit={handleRegister} className='w-full flex justify-center'>
-            <div className='flex flex-col items-center bg-black/10 w-full max-w-sm p-5 rounded-lg mt-4'>
+        <form onSubmit={handleRegister} className='flex flex-col gap-3'>
 
-                <div className='w-full'>
-                    <h1>Name: </h1>
-                    <input
-                    type="username"
-                    placeholder="Enter Your Full Name"
-                    className="w-full p-2 mb-4 border rounded-full text-center"
-                    required
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    />
-                </div>
+          {/* NAME */}
+          <input
+            type="text"
+            placeholder="Full Name"
+            className="w-full p-3 border rounded-lg text-center focus:ring-2 focus:ring-orange-400"
+            required
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
 
-                <div className='w-full'>
-                    <h1>Email: </h1>
-                    <input
-                        type="email"
-                        placeholder="Enter Gmail ID"
-                        className="w-full p-2 mb-4 border rounded-full text-center"
-                        required
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        
-                        // ✅ Only allow Gmail
-                        pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$"
-                        title="Please enter a valid Gmail address (example@gmail.com)"
-                    />
-                </div>
+          {/* EMAIL */}
+          <input
+            type="email"
+            placeholder="Gmail ID"
+            className="w-full p-3 border rounded-lg text-center focus:ring-2 focus:ring-orange-400"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$"
+            title="Enter valid Gmail (example@gmail.com)"
+          />
 
-                <div className='w-full'>
-                    <h1>Phone Number: </h1>
-                    <input
-                        type="tel"
-                        placeholder="Enter Phone Number"
-                        className="w-full p-2 mb-4 border rounded-full text-center"
-                        required
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
+          {/* PHONE */}
+          <input
+            type="tel"
+            placeholder="Phone Number"
+            className="w-full p-3 border rounded-lg text-center focus:ring-2 focus:ring-orange-400"
+            required
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            pattern="[6-9]{1}[0-9]{9}"
+            maxLength="10"
+          />
 
-                        // ✅ Only 10 digit Indian number
-                        pattern="[6-9]{1}[0-9]{9}"
-                        maxLength="10"
-                        title="Enter valid 10-digit phone number starting with 6-9"
-                    />
-                </div>
+          {/* DOB */}
+          <input
+            type="date"
+            className="w-full p-3 border rounded-lg text-center text-gray-500"
+            required
+            value={DoB}
+            onChange={(e) => setDob(e.target.value)}
+          />
 
-                <div className='w-full'>
-                    <h1>DoB: </h1>
-                    <input
-                        type="Date"
-                        className="w-full p-2 mb-4 border rounded-full text-center text-slate-400"
-                        required
-                        value={DoB}
-                        onChange={(e) => setDob(e.target.value)}
-                    />
-                </div>
+          {/* PASSWORD */}
+          <div className="relative w-full">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              className="w-full p-3 border rounded-lg text-center focus:ring-2 focus:ring-orange-400"
+              required
+              value={Password}
+              onChange={(e) => setPassword(e.target.value)}
+              pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$"
+              title="Min 8 chars, 1 letter, 1 number, 1 special character"
+            />
 
-                <div className='w-full'>
-                    <h1>Password: </h1>
-                    <input
-                        type="password"
-                        placeholder="Enter password"
-                        className="w-full p-2 mb-4 border rounded-full text-center"
-                        required
-                        pattern="^[a-zA-Z]+[^a-zA-Z0-9]+[0-9]+$"
-                        title="Password must be like abc@123 or xyz#456 (letters + special char + numbers)"
-                        value={Password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
+            <span
+              className="absolute right-3 top-3 cursor-pointer text-gray-500"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? "🙈" : "👁️"}
+            </span>
+          </div>
 
-                <div className='w-full'>
-                    <h1>Re-Enter Password: </h1>
-                    <input
-                        type="password"
-                        placeholder="Enter Re-Enter password"
-                        className="w-full p-2 mb-4 border rounded-full text-center"
-                        required
-                        value={RePassword}
-                        onChange={(e) => setRePassword(e.target.value)}
-                    />
-                </div>
+          {/* CONFIRM PASSWORD */}
+          <div className="relative w-full">
+            <input
+              type={showRePassword ? "text" : "password"}
+              placeholder="Confirm Password"
+              className="w-full p-3 border rounded-lg text-center focus:ring-2 focus:ring-orange-400"
+              required
+              value={RePassword}
+              onChange={(e) => setRePassword(e.target.value)}
+            />
 
-                <button
-                    type="submit"
-                    disabled={loading}
-                    className={`w-full p-2 rounded text-white 
-                    ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-slate-500 hover:bg-slate-800'}`}
-                >
-                    {loading ? (
-                        <span className="flex items-center justify-center gap-2">
-                            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                            Processing...
-                        </span>
-                    ) : (
-                        "Register"
-                    )}
-                </button>
+            <span
+              className="absolute right-3 top-3 cursor-pointer text-gray-500"
+              onClick={() => setShowRePassword(!showRePassword)}
+            >
+              {showRePassword ? "🙈" : "👁️"}
+            </span>
+          </div>
 
-                <div className='flex flex-col md:flex-row mt-2 text-center'>
-                    Already have account? 
-                    <p className='text-red-500 cursor-pointer px-2' onClick={()=> navigate('/user/login')}>
-                        login
-                    </p>
-                </div>
+          {/* BUTTON */}
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full py-2 rounded-lg text-white 
+            ${loading ? 'bg-gray-400' : 'bg-orange-500 hover:bg-orange-600'}`}
+          >
+            {loading ? "Processing..." : "Register"}
+          </button>
 
-            </div>
         </form>
 
+        {/* LOGIN LINK */}
+        <p className='text-center mt-4 text-sm'>
+          Already have account? 
+          <span 
+            className='text-red-500 cursor-pointer ml-1'
+            onClick={()=> navigate('/user/login')}
+          >
+            Login
+          </span>
+        </p>
+
+      </div>
     </div>
   )
 }
 
-export default RegisterMiddleContent
+export default RegisterMiddleContent;

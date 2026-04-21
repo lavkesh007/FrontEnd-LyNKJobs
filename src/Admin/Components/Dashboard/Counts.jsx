@@ -1,60 +1,75 @@
 import React,{useState,useEffect} from 'react'
 
 const Counts = () => {
-    const [stats, setStats] = useState({
+
+  const [stats, setStats] = useState({
     activeJobs: 0,
     totalJobs: 0,
     activeUsers: 0,
     totalUsers: 0,
     totalApplyJobs: 0,
     totalUserRequest : 0
-
   });
-    useEffect(() => {
-  const fetchStats = () => {
-    fetch("https://api.jobslynk.in/admin/stats",{
+
+  useEffect(() => {
+    const fetchStats = () => {
+      fetch("https://api.jobslynk.in/admin/stats",{
         headers : {
-            Authorization : "Bearer " + localStorage.getItem("adminToken")
+          Authorization : "Bearer " + localStorage.getItem("adminToken")
         }
-    })
+      })
       .then(res => {
         if(!res.ok) throw new Error("Unauthorized");
-        return res.json()})
+        return res.json()
+      })
       .then(data => setStats(data))
       .catch(err => console.error(err));
-  };
+    };
 
-  fetchStats();
+    fetchStats();
+    const interval = setInterval(fetchStats, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
-  const interval = setInterval(fetchStats, 5000); // every 5 sec
+  const cards = [
+    { title: "Active Jobs", value: stats.activeJobs, icon: "💼" },
+    { title: "Total Jobs", value: stats.totalJobs, icon: "📊" },
+    { title: "Active Users", value: stats.activeUsers, icon: "👤" },
+    { title: "Total Users", value: stats.totalUsers, icon: "👥" },
+    { title: "Applications", value: stats.totalApplyJobs, icon: "📄" },
+    { title: "User Requests", value: stats.totalUserRequest, icon: "📨" },
+  ];
 
-  return () => clearInterval(interval);
-}, []);
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 p-4">
+    <div className="p-3 sm:p-4">
 
-      <div className="bg-white p-4 rounded-xl shadow items-center  flex flex-col">
-        <h1>💼 Active Jobs</h1> <h1 className='text-4xl'>{stats.activeJobs}</h1>
-      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 
-      <div className="bg-white p-4 rounded-xl shadow items-center flex flex-col">
-        <h1>📊 Total Jobs</h1> <h1 className='text-4xl'>{stats.totalJobs}</h1>
-      </div>
+        {cards.map((card, i) => (
+          <div 
+            key={i}
+            className="bg-white p-4 sm:p-5 rounded-2xl shadow hover:shadow-lg transition flex flex-col items-center justify-center text-center"
+          >
 
-      <div className="bg-white p-4 rounded-xl shadow items-center flex flex-col">
-        <h1>👤 Active Users</h1><h1 className='text-4xl'>{stats.activeUsers}</h1>
-      </div>
+            {/* Icon */}
+            <div className="text-2xl sm:text-3xl mb-2">
+              {card.icon}
+            </div>
 
-      <div className="bg-white p-4 rounded-xl shadow items-center flex flex-col">
-        <h1>👥 Total Users</h1><h1 className='text-4xl'>{stats.totalUsers}</h1> 
-      </div>
+            {/* Title with Underline */}
+            <h1 className="text-sm sm:text-base text-gray-600 font-medium relative group inline-block">
+              {card.title}
+              <span className="block h-[2px] w-full bg-orange-400 mt-1"></span>
+            </h1>
 
-      <div className="bg-white p-4 rounded-xl shadow col-span-2 md:col-span-1 items-center flex flex-col">
-       <h1>📄 Applications</h1> <h1 className='text-4xl'>{stats.totalApplyJobs}</h1>
-      </div>
+            {/* Value */}
+            <h1 className="text-2xl sm:text-4xl font-bold text-gray-800 mt-2">
+              {card.value}
+            </h1>
 
-      <div className="bg-white p-4 rounded-xl shadow col-span-2 md:col-span-1 items-center flex flex-col">
-       <h1>📄 User Request</h1> <h1 className='text-4xl'>{stats.totalUserRequest}</h1>
+          </div>
+        ))}
+
       </div>
 
     </div>

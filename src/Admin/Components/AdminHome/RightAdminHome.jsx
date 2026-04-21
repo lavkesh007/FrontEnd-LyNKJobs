@@ -3,11 +3,10 @@ import Counts from '../Dashboard/Counts'
 
 const RightAdminHome = () => {
   return (
-    <div className=' h-full'>
-      <div className=''> 
-         <Counts/>
+    <div className='h-full w-full'>
+      <div className='p-2 md:p-4'>
+        <Counts/>
       </div>
-      
     </div>
   )
 }
