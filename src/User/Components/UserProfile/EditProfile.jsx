@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 
 const EditProfile = () => {
     const navigate = useNavigate();
-  // 🔹 Edit state
+
     const [isEdit , setIsEdit] = useState({
         name: false,
         email: false,
@@ -16,11 +16,9 @@ const EditProfile = () => {
         college: false
     });
 
-    // 🔹 User data
     const [user,setUser] = useState({});
     const [loading,setLoading] = useState(false);
 
-    // 🔹 Fetch data
     useEffect(()=>{
         fetch("https://api.jobslynk.in/user/userDetails",{
         headers : {
@@ -35,12 +33,10 @@ const EditProfile = () => {
         .catch(()=>setUser({}));
     },[]);
 
-    // 🔹 Toggle edit
     const handleToggle = (field)=>{
         setIsEdit({...isEdit,[field] : !isEdit[field]})
     }
 
-    // 🔹 Handle input change
     const handleChange = (field, value) => {
         setUser({
         ...user,
@@ -49,6 +45,7 @@ const EditProfile = () => {
     }
     
     const [file,setFile] = useState();
+
     const onSubmit = () => {
         const formdata = new FormData();
         formdata.append("user",JSON.stringify(user));
@@ -56,198 +53,133 @@ const EditProfile = () => {
             formdata.append("image",file);
         }
         if(loading) return;
-    setLoading(true);
-    fetch("https://api.jobslynk.in/user/editUser",{
-        method:"POST",
-        headers :{
-        Authorization : "Bearer " + localStorage.getItem("token")
-        },
-        body : formdata
-    })
-    .then(res => {
-        if(res.status === 401){
-         return (  localStorage.removeItem("token"),
-            navigate("/login")),
-            setLoading(false);
-        }
-        if(res.ok){
-            setLoading(false);
-        Swal.fire({
-            title : "Profile Updated!",
-            icon:"success"
+
+        setLoading(true);
+
+        fetch("https://api.jobslynk.in/user/editUser",{
+            method:"POST",
+            headers :{
+            Authorization : "Bearer " + localStorage.getItem("token")
+            },
+            body : formdata
         })
-        setIsEdit({
-            name: false,
-            email: false,
-            phone: false,
-            dob: false,
-            passout: false,
-            gender: false,
-            qualification: false,
-            college: false
-        });
-       
-        navigate("/user/profile")
-        } else {
-            setLoading(false);
-        Swal.fire({
-            title : "Update Failed ❌",
-            icon : "error"
+        .then(res => {
+            if(res.status === 401){
+                localStorage.removeItem("token");
+                navigate("/login");
+                setLoading(false);
+                return;
+            }
+
+            if(res.ok){
+                setLoading(false);
+                Swal.fire({
+                    title : "Profile Updated!",
+                    icon:"success"
+                })
+
+                setIsEdit({
+                    name: false,
+                    email: false,
+                    phone: false,
+                    dob: false,
+                    passout: false,
+                    gender: false,
+                    qualification: false,
+                    college: false
+                });
+
+                navigate("/user/profile")
+            } else {
+                setLoading(false);
+                Swal.fire({
+                    title : "Update Failed ❌",
+                    icon : "error"
+                })
+            }
         })
-        }
-        
-    })
     }
 
   return ( 
-    <div className='w-full flex justify-center min-h-screen items-center'>
+    <div className='min-h-screen flex justify-center items-center 
+                    bg-gradient-to-br from-slate-900 to-slate-700 p-4'>
       
-      <div className='p-6 w-[550px] bg-white border rounded-xl'>
+      <div className='p-6 w-full max-w-2xl 
+                      bg-white/10 backdrop-blur-md 
+                      border border-white/20 
+                      rounded-xl shadow-lg text-white'>
 
         {/* Profile */}
-        <div className='flex items-center gap-5 justify-center mb-4'>
+        <div className='flex flex-col sm:flex-row items-center gap-5 justify-center mb-6'>
             <img 
-              className='w-28 h-28 rounded-full border-spacing-1 border-slate-800' 
-              src={user.image? user.image : "https://img.freepik.com/premium-vector/vector-flat-illustration-grayscale-avatar-user-profile-person-icon-gender-neutral-silhouette-profile-picture-suitable-social-media-profiles-icons-screensavers-as-templatex9xa_719432-2210.jpg" }
+              className='w-28 h-28 rounded-full border-2 border-orange-400 object-cover' 
+              src={user.image ? user.image : "https://img.freepik.com/premium-vector/default-avatar.jpg"}
               alt="" 
             />
-            <div>
-                <input type='file' className='text-sm' onChange={(e)=> setFile(e.target.files[0])}/>
-                <p className='text-xs text-red-400'>*jpg,*png,*jpeg</p>
+            <div className='text-center sm:text-left'>
+                <input 
+                  type='file' 
+                  className='text-sm text-gray-200'
+                  onChange={(e)=> setFile(e.target.files[0])}
+                />
+                <p className='text-xs text-gray-300'>*jpg, *png, *jpeg</p>
             </div>
         </div>
 
-        <hr className='border-gray-400 mb-4'/>
+        <hr className='border-white/20 mb-4'/>
 
         {/* User ID */}
-        <div className='flex gap-28 mb-4'>
-            <h1>User ID :</h1>
-            <h1 className='font-semibold'>{user?.userID}</h1>
+        <div className='flex justify-between mb-4 text-gray-300'>
+            <span>User ID :</span>
+            <span className='font-semibold'>{user?.userID}</span>
         </div>
 
-        {/* Name */}
-        <div className='grid grid-cols-3 items-center gap-4 mb-3'>
-            <h1>User Name :</h1>
-            <input
-              type="text"
-              value={user?.userName || ""}
-              disabled={!isEdit.name}
-              onChange={(e)=>handleChange("userName", e.target.value)}
-              className='w-full h-9 p-2 rounded-lg border'
-            />
-            <button onClick={()=>handleToggle("name")} className='w-20 h-9 bg-slate-600 text-white rounded-xl'>
-                {isEdit.name ? "Save" : "Edit"}
-            </button>
-        </div>
+        {/* Fields */}
+        <div className='flex flex-col gap-3'>
 
-        {/* Email */}
-        <div className='grid grid-cols-3 items-center gap-4 mb-3'>
-            <h1>Email :</h1>
-            <input
-              type="text"
-              value={user?.userEmail || ""}
-              disabled={!isEdit.email}
-              onChange={(e)=>handleChange("userEmail", e.target.value)}
-              className='w-full h-9 p-2 rounded-lg border'
-            />
-            <button onClick={()=>handleToggle("email")} className='w-20 h-9 bg-slate-600 text-white rounded-xl'>
-                {isEdit.email ? "Save" : "Edit"}
-            </button>
-        </div>
+        {[
+            ["User Name","userName","name"],
+            ["Email","userEmail","email"],
+            ["PhoneNo","PhoneNo","phone"],
+            ["DOB","DOB","dob"],
+            ["Passout Year","passoutYear","passout"],
+            ["Gender","gender","gender"],
+            ["Qualification","highQualification","qualification"],
+            ["College Name","collegeName","college"]
+        ].map((item,i)=>(
+            <div key={i} className='grid grid-cols-1 sm:grid-cols-3 gap-2 items-center'>
 
-        {/* Phone */}
-        <div className='grid grid-cols-3 items-center gap-4 mb-3'>
-            <h1>PhoneNo :</h1>
-            <input
-              type="text"
-              value={user?.PhoneNo || ""}
-              disabled={!isEdit.phone}
-              onChange={(e)=>handleChange("PhoneNo", e.target.value)}
-              className='w-full h-9 p-2 rounded-lg border'
-            />
-            <button onClick={()=>handleToggle("phone")} className='w-20 h-9 bg-slate-600 text-white rounded-xl'>
-                {isEdit.phone ? "Save" : "Edit"}
-            </button>
-        </div>
+                <h1 className='text-sm'>{item[0]} :</h1>
 
-        {/* DOB */}
-        <div className='grid grid-cols-3 items-center gap-4 mb-3'>
-            <h1>DOB :</h1>
-            <input
-              type="text"
-              value={user?.DOB || ""}
-              disabled={!isEdit.dob}
-              onChange={(e)=>handleChange("DOB", e.target.value)}
-              className='w-full h-9 p-2 rounded-lg border'
-            />
-            <button onClick={()=>handleToggle("dob")} className='w-20 h-9 bg-slate-600 text-white rounded-xl'>
-                {isEdit.dob ? "Save" : "Edit"}
-            </button>
-        </div>
+                <input
+                  value={user?.[item[1]] || ""}
+                  disabled={!isEdit[item[2]]}
+                  onChange={(e)=>handleChange(item[1], e.target.value)}
+                  className={`p-2 rounded-lg text-black text-sm 
+                  ${!isEdit[item[2]] ? "bg-gray-200" : "bg-white"}`}
+                />
 
-        {/* Passout */}
-        <div className='grid grid-cols-3 items-center gap-4 mb-3'>
-            <h1>Passout Year :</h1>
-            <input
-              type="text"
-              value={user?.passoutYear || ""}
-              disabled={!isEdit.passout}
-              onChange={(e)=>handleChange("passoutYear", e.target.value)}
-              className='w-full h-9 p-2 rounded-lg border'
-            />
-            <button onClick={()=>handleToggle("passout")} className='w-20 h-9 bg-slate-600 text-white rounded-xl'>
-                {isEdit.passout ? "Save" : "Edit"}
-            </button>
-        </div>
+                <button 
+                  onClick={()=>handleToggle(item[2])}
+                  className='bg-orange-500 hover:bg-orange-600 rounded-lg text-sm py-2'
+                >
+                    {isEdit[item[2]] ? "Save" : "Edit"}
+                </button>
 
-        {/* Gender */}
-        <div className='grid grid-cols-3 items-center gap-4 mb-3'>
-            <h1>Gender :</h1>
-            <input
-              type="text"
-              value={user?.gender || ""}
-              disabled={!isEdit.gender}
-              onChange={(e)=>handleChange("gender", e.target.value)}
-              className='w-full h-9 p-2 rounded-lg border'
-            />
-            <button onClick={()=>handleToggle("gender")} className='w-20 h-9 bg-slate-600 text-white rounded-xl'>
-                {isEdit.gender ? "Save" : "Edit"}
-            </button>
-        </div>
+            </div>
+        ))}
 
-        {/* Qualification */}
-        <div className='grid grid-cols-3 items-center gap-4 mb-3'>
-            <h1>Qualification :</h1>
-            <input
-              type="text"
-              value={user?.highQualification || ""}
-              disabled={!isEdit.qualification}
-              onChange={(e)=>handleChange("highQualification", e.target.value)}
-              className='w-full h-9 p-2 rounded-lg border'
-            />
-            <button onClick={()=>handleToggle("qualification")} className='w-20 h-9 bg-slate-600 text-white rounded-xl'>
-                {isEdit.qualification ? "Save" : "Edit"}
-            </button>
-        </div>
-
-        {/* College */}
-        <div className='grid grid-cols-3 items-center gap-4 mb-3'>
-            <h1>College Name :</h1>
-            <input
-              type="text"
-              value={user?.collegeName || ""}
-              disabled={!isEdit.college}
-              onChange={(e)=>handleChange("collegeName", e.target.value)}
-              className='w-full h-9 p-2 rounded-lg border'
-            />
-            <button onClick={()=>handleToggle("college")} className='w-20 h-9 bg-slate-600 text-white rounded-xl'>
-                {isEdit.college ? "Save" : "Edit"}
-            </button>
         </div>
 
         {/* Submit */}
-        <div className='flex justify-center mt-5'>
-            <button className={`w-32 h-10 bg-blue-500 text-white rounded-xl ${loading ? 'bg-blue-300 cursor-not-allowed':'bg-blue-500 hover:bg-blue-600'}`} onClick={onSubmit}>
+        <div className='flex justify-center mt-6'>
+            <button 
+              className={`w-36 py-2 rounded-lg text-white 
+              ${loading 
+                ? 'bg-gray-400 cursor-not-allowed' 
+                : 'bg-blue-500 hover:bg-blue-600'}`}
+              onClick={onSubmit}
+            >
                 {loading ? (
                     <span className="flex items-center justify-center gap-2">
                         <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>

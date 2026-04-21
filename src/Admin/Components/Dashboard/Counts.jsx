@@ -32,12 +32,12 @@ const Counts = () => {
   }, []);
 
   const cards = [
-    { title: "Active Jobs", value: stats.activeJobs, icon: "💼" },
-    { title: "Total Jobs", value: stats.totalJobs, icon: "📊" },
-    { title: "Active Users", value: stats.activeUsers, icon: "👤" },
-    { title: "Total Users", value: stats.totalUsers, icon: "👥" },
-    { title: "Applications", value: stats.totalApplyJobs, icon: "📄" },
-    { title: "User Requests", value: stats.totalUserRequest, icon: "📨" },
+    { title: "Active Jobs", value: stats.activeJobs, icon: "💼", color:"from-orange-400 to-orange-600" },
+    { title: "Total Jobs", value: stats.totalJobs, icon: "📊", color:"from-blue-400 to-blue-600" },
+    { title: "Active Users", value: stats.activeUsers, icon: "👤", color:"from-green-400 to-green-600" },
+    { title: "Total Users", value: stats.totalUsers, icon: "👥", color:"from-purple-400 to-purple-600" },
+    { title: "Applications", value: stats.totalApplyJobs, icon: "📄", color:"from-pink-400 to-pink-600" },
+    { title: "User Requests", value: stats.totalUserRequest, icon: "📨", color:"from-yellow-400 to-yellow-600" },
   ];
 
   return (
@@ -48,24 +48,33 @@ const Counts = () => {
         {cards.map((card, i) => (
           <div 
             key={i}
-            className="bg-white p-4 sm:p-5 rounded-2xl shadow hover:shadow-lg transition flex flex-col items-center justify-center text-center"
+            className={`p-5 rounded-2xl shadow-lg text-white 
+            bg-gradient-to-br ${card.color} 
+            transform transition duration-300 hover:scale-105 hover:shadow-2xl`}
           >
 
-            {/* Icon */}
-            <div className="text-2xl sm:text-3xl mb-2">
-              {card.icon}
+            {/* Top Row */}
+            <div className="flex justify-between items-center">
+
+              {/* Title */}
+              <h1 className="text-sm sm:text-base font-medium relative">
+                {card.title}
+                <span className="block h-[2px] w-full bg-white/70 mt-1"></span>
+              </h1>
+
+              {/* Icon */}
+              <div className="text-2xl sm:text-3xl opacity-80">
+                {card.icon}
+              </div>
+
             </div>
 
-            {/* Title with Underline */}
-            <h1 className="text-sm sm:text-base text-gray-600 font-medium relative group inline-block">
-              {card.title}
-              <span className="block h-[2px] w-full bg-orange-400 mt-1"></span>
-            </h1>
-
             {/* Value */}
-            <h1 className="text-2xl sm:text-4xl font-bold text-gray-800 mt-2">
-              {card.value}
-            </h1>
+            <div className="mt-4">
+              <h1 className="text-3xl sm:text-4xl font-bold tracking-wide">
+                {card.value}
+              </h1>
+            </div>
 
           </div>
         ))}

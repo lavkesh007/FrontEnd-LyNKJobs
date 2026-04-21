@@ -22,35 +22,55 @@ const AdminNavbar = ({ toggleSidebar }) => {
     },[]);
 
   return (
-    <div className='bg-white w-full shadow-sm'> 
-      <div className='flex justify-between items-center px-4 py-2'>
+    <div className='w-full 
+                    bg-white/80 backdrop-blur-md 
+                    shadow-md border-b'>
 
-        {/* Left */}
+      <div className='flex justify-between items-center px-4 sm:px-6 py-3'>
+
+        {/* LEFT */}
         <div className='flex items-center gap-3'>
-          
-          {/* Mobile Menu Button */}
-          <button className='md:hidden' onClick={toggleSidebar}>
-            <Menu size={24}/>
+
+          {/* Mobile Menu */}
+          <button 
+            className='md:hidden p-2 rounded-lg hover:bg-gray-100 transition'
+            onClick={toggleSidebar}
+          >
+            <Menu size={22}/>
           </button>
 
-          <h1 className='text-xl md:text-2xl text-slate-700 font-serif font-semibold'>
+          {/* Logo */}
+          <h1 className='text-lg sm:text-2xl font-bold text-slate-700 tracking-wide'>
             LyNK <span className='text-orange-500'>Job's</span>
           </h1>
+
         </div>
 
-        {/* Right */}
-        <div className='flex gap-2 items-center'>
-          <h1 className='hidden sm:block text-sm md:text-lg text-red-400 font-semibold underline'>
-            {admin?.adminName}
+        {/* RIGHT */}
+        <div className='flex items-center gap-3'>
+
+          {/* Admin Name */}
+          <h1 className='hidden sm:block text-sm md:text-lg text-gray-700 font-medium'>
+            👋 {admin?.adminName}
           </h1>
-          <img 
-            className='w-8 h-8 rounded-full border' 
-            src="https://www.shutterstock.com/image-vector/default-avatar-social-media-display-600nw-2632690107.jpg" 
-            alt="" 
-          />
+
+          {/* Avatar */}
+          <div className='relative'>
+            <img 
+              className='w-9 h-9 rounded-full border-2 border-orange-400 shadow-sm 
+                         hover:scale-105 transition'
+              src="https://www.shutterstock.com/image-vector/default-avatar-social-media-display-600nw-2632690107.jpg" 
+              alt="" 
+            />
+
+            {/* Online Dot */}
+            <span className='absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border'></span>
+          </div>
+
         </div>
 
       </div>
+
     </div>
   )
 }

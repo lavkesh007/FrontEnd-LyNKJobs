@@ -2,6 +2,7 @@ import React,{useState,useEffect} from 'react'
 import { useNavigate,useLocation } from 'react-router-dom'
 
 const LeftSide = () => {
+
     const navigate = useNavigate();
     const [user,setUser] = useState(null);
     const location = useLocation();
@@ -21,79 +22,58 @@ const LeftSide = () => {
     },[]);
 
   return (
-    <div className='bg-black/50 h-full backdrop-blur-md border-r text-lg border-white/20 w-full md:w-[250px] p-4 flex flex-col justify-between'>
+    <div className='h-full flex flex-col justify-between 
+                    bg-gradient-to-b from-slate-900 to-slate-800 
+                    text-white p-4'>
 
-        {/* 🔥 Top Section */}
+        {/* TOP */}
         <div className='flex flex-col gap-4'>
 
-            {/* Profile */}
-            <div className='flex flex-col items-center gap-2'>
-                <h1 className='text-3xl text-slate-700 font-serif font-bold'>
-                  LyNK <span className='text-orange-500'>Job's</span>
-                </h1>
+            <h1 className='text-2xl text-center font-bold'>
+              LyNK <span className='text-orange-400'>Job's</span>
+            </h1>
 
+            <div className='flex flex-col items-center gap-2'>
                 <img 
-                  className='w-24 h-24 rounded-full object-cover border-2 border-white'
-                  src={
-                    user?.image
-                        ? user.image
-                      : "https://img.freepik.com/premium-vector/vector-flat-illustration-grayscale-avatar-user-profile-person-icon-gender-neutral-silhouette-profile-picture-suitable-social-media-profiles-icons-screensavers-as-templatex9xa_719432-2191.jpg"
-                  }
+                  className='w-20 h-20 rounded-full border-2 border-orange-400'
+                  src={user?.image || "https://img.freepik.com/premium-vector/default-avatar.jpg"}
                   alt=""
                 />
-
-                <div className='text-center'>
-                    <h1 className='text-white font-semibold'>
-                      {user?.userName || "User"}
-                    </h1>
-                    <p className='text-gray-400 text-xs'>
-                      ID: {user?.userID}
-                    </p>
-                </div>
+                <h1>{user?.userName || "User"}</h1>
+                <p className='text-xs text-gray-400'>ID: {user?.userID}</p>
             </div>
 
             <hr className="border-white/20"/>
 
-            {/* Menu */}
+            {/* MENU */}
             <div className='flex flex-col gap-2'>
 
-                <div 
-                  className='p-3 rounded-lg hover:bg-white/20 cursor-pointer'
-                  onClick={()=>navigate("/")} 
-                >
-                  Home
-                </div>
-
-                <div 
-                  className={`p-3 rounded-lg cursor-pointer hover:bg-white/20 ${location.pathname==="/user/profile" ? "bg-white/20" : ""}`}
-                  onClick={()=>navigate("/user/profile")}
-                >
-                  Profile
-                </div>
-
-                <div 
-                  className={`p-3 rounded-lg cursor-pointer hover:bg-white/20 ${location.pathname==="/user/profile/applied" ? "bg-white/20" : ""}`}
-                  onClick={()=>navigate('/user/profile/applied')}
-                >
-                  Applied Jobs
-                </div>
-
-                <div 
-                  className={`p-3 rounded-lg cursor-pointer hover:bg-white/20 ${location.pathname==="/user/profile/setting" ? "bg-white/20" : ""}`}
-                  onClick={()=>navigate('/user/profile/setting')}
-                >
-                  Settings
-                </div>
+                {[
+                  {name:"Home", path:"/"},
+                  {name:"Profile", path:"/user/profile"},
+                  {name:"Applied Jobs", path:"/user/profile/applied"},
+                  {name:"Settings", path:"/user/profile/setting"},
+                ].map((item,i)=>(
+                  <div
+                    key={i}
+                    className={`p-3 rounded-lg cursor-pointer transition
+                    ${location.pathname===item.path 
+                      ? "bg-white/10 border-l-4 border-orange-400" 
+                      : "hover:bg-white/10"}`}
+                    onClick={()=>navigate(item.path)}
+                  >
+                    {item.name}
+                  </div>
+                ))}
 
             </div>
         </div>
-        
-        {/* 🔥 Bottom */}
+
+        {/* LOGOUT */}
         <div>
             <hr className="border-white/20 mb-2"/>
-
             <div 
-              className='p-3 rounded-lg text-red-400 hover:bg-red-500/20 cursor-pointer'
+              className='p-3 text-red-400 hover:bg-red-500/20 rounded-lg cursor-pointer'
               onClick={()=>{
                 localStorage.removeItem("token");
                 navigate("/user/login");
