@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Home/Navbar";
 import Swal from "sweetalert2";
@@ -14,7 +14,22 @@ const McqsTopics = () => {
   const [showResult, setShowResult] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // 🔥 Daily Question
+  const [dailyQuestion, setDailyQuestion] = useState(null);
+
   const topics = ["java", "sql", "aptitude", "python", "cpp", "javascript"];
+
+  // 👉 Fetch Daily Question
+  useEffect(() => {
+    fetch("https://api.jobslynk.in/mcqs/java")
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setDailyQuestion(data[0]);
+        }
+      })
+      .catch(err => console.error(err));
+  }, []);
 
   // 👉 select subject
   const handleSubjectClick = (sub) => {
@@ -114,15 +129,46 @@ const McqsTopics = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
 
+      {/* NAVBAR */}
       <div className="sticky top-0 shadow-md bg-white">
         <Navbar />
       </div>
 
       <div className="max-w-6xl mx-auto px-4 py-8">
 
-        <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
+        {/* TITLE */}
+        <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
           🚀 Practice MCQs
         </h1>
+
+        {/* 🔥 SHOW ONLY BEFORE QUIZ */}
+        {!started && (
+          <>
+            {/* DAILY BANNER */}
+            <div className="bg-gradient-to-r from-orange-500 to-pink-500 text-white 
+                            p-5 rounded-xl shadow-lg mb-6 text-center">
+              <h2 className="text-xl md:text-2xl font-bold">
+                🕘 Daily MCQ Update
+              </h2>
+              <p className="mt-2 text-sm md:text-base">
+                New Questions are updated every day at 
+                <span className="font-semibold underline"> 9:00 AM</span> 🚀
+              </p>
+            </div>
+
+            {/* TODAY QUESTION */}
+            {dailyQuestion && (
+              <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border">
+                <h3 className="text-lg font-bold text-orange-500 mb-3">
+                  🔥 Today's Question
+                </h3>
+                <p className="text-gray-800 font-medium">
+                  {dailyQuestion.question}
+                </p>
+              </div>
+            )}
+          </>
+        )}
 
         {/* SUBJECT */}
         {!started && (
@@ -230,7 +276,7 @@ const McqsTopics = () => {
               </div>
             )}
 
-            {/* FINAL RESULT */}
+            {/* RESULT */}
             {showResult && (
               <div className="mt-8 text-center bg-white p-6 rounded-xl shadow-lg">
                 <h3 className="text-2xl font-bold text-green-600">
