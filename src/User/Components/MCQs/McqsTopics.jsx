@@ -17,7 +17,7 @@ const McqsTopics = () => {
   // 🔥 Daily Question
   const [dailyQuestion, setDailyQuestion] = useState(null);
 
-  const topics = ["java", "sql", "aptitude", "python", "cpp", "javascript"];
+  const topics = ["java", "sql", "aptitude", "python", "cpp", "javascript","networking"];
 
   // 👉 Fetch Daily Question
   useEffect(() => {
