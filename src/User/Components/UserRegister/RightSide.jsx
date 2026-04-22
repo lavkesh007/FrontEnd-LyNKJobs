@@ -122,14 +122,18 @@ const RegisterMiddleContent = () => {
             maxLength="10"
           />
 
-          {/* DOB */}
           <input
-            type="date"
+            type={DoB ? "date" : "text"}
+            placeholder="Date of Birth"
             className="w-full p-3 border rounded-lg text-center text-gray-500"
             required
             value={DoB}
+            onFocus={(e) => (e.target.type = "date")}
+            onBlur={(e) => {
+                if (!DoB) e.target.type = "text";
+            }}
             onChange={(e) => setDob(e.target.value)}
-          />
+            />
 
           {/* PASSWORD */}
           <div className="relative w-full">
