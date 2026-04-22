@@ -35,7 +35,7 @@ const LeftAdminHome = () => {
         {/* Dashboard */}
         <div
           className={`w-full h-12 flex items-center px-3 rounded-lg cursor-pointer transition 
-          ${location.pathname==="/admin/dashboard" 
+          ${location.pathname==="/admin/dashboard" || location.pathname==="/admin/dashboard/"
             ? "bg-white/10 border-l-4 border-orange-400" 
             : "hover:bg-white/10"}`}
           onClick={()=> admin ? navigate("") : navigate('/admin/login')}
