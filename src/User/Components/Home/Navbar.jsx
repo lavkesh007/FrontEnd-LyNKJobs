@@ -39,7 +39,10 @@ const Navbar = () => {
 
         {/* LOGO */}
         <div className="flex items-center">
-          <h1 className='text-xl md:text-3xl text-slate-800 font-serif font-bold'>
+          <h1 className='text-xl md:text-3xl text-slate-800 font-serif font-bold cursor-pointer' onClick={()=> {navigate("/"),
+              setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }, 100);}}>
             LyNK <span className='text-orange-600'>Job's</span>
           </h1>
         </div>
