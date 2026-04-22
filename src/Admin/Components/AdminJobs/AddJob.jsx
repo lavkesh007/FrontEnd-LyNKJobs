@@ -21,8 +21,27 @@ const AddJob = () => {
         description : "",
         websiteUrl:""
    });
+   const initialJobState = {
+        logo : "",
+        companyName : "",
+        role : "",
+        location : "",
+        openDate : "",
+        expireDate :"",
+        skill : "",
+        experience : "",
+        passoutYear : "",
+        responsibility : "",
+        qualification : "",
+        workMode : "",
+        salary : "",
+        bond : "",
+        genderPreference : "",
+        description : "",
+        websiteUrl:""
+   };
 
-   const initialJobState = { ...job };
+//    const initialJobState = { ...job };
 
    const handleChange = (e) =>{
     setJob({ ...job, [e.target.name] : e.target.value})
