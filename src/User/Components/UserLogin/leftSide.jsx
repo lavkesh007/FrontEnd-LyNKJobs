@@ -2,7 +2,7 @@ import React ,{ useState, useEffect } from 'react'
 
 const LeftSide = () => {
 
-  const text = "Welcome back to Lynk Job's! 👋 We're glad to see you again on your career journey 🚀. Explore opportunities, connect with top companies 🤝, and take the next step toward success 🌱.";
+  const text = "Weelcome back to Lynk Job's! 👋 We're glad to see you again on your career journey 🚀. Explore opportunities, connect with top companies 🤝, and take the next step toward success 🌱.";
 
   const [displayText, setDisplayText] = useState("");
 
